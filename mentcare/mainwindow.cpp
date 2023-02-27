@@ -66,7 +66,7 @@ void MainWindow::on_addPatientSubmitButton_clicked()
         if (query.exec()){
             QMessageBox::information(this, "Inserted", "Successfully Added Patient");
             db.close();
-            ui->stackedWidget->setCurrentWidget(ui->HomePage);
+            ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
 
         } else {
             QMessageBox::information(this, "Not Inserted", "Could Not Add Patient");
