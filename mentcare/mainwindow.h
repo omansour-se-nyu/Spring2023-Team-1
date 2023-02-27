@@ -20,13 +20,18 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
 
     void on_addPatient_pushButton_clicked();
 
     void on_addPatientCancelButton_clicked();
 
     void on_addPatientSubmitButton_clicked();
+
+    void on_patientLookupButton_clicked();
+
+    void on_patientsPage_exit_clicked();
+
+    void on_stackedWidget_currentChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;
