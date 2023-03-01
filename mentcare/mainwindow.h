@@ -33,6 +33,18 @@ private slots:
 
     void on_stackedWidget_currentChanged(int arg1);
 
+    void on_pushButton_4_clicked();
+
+    void on_LoginButton_clicked();
+
+    void on_LoginPage_LoginButton_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_HomePage_ToLoginPage_Button_clicked();
+
+    void on_LoginPage_BackToMainButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

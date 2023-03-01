@@ -1,2 +1,11 @@
 # Spring2023-Team-1
-This is team repository for Team 1 (Spring 2023)
+
+Mentcare healthcare desktask application
+
+# Running instruction
+
+download SQLLite software and open mentcare.sqlite
+
+https://sqlitestudio.pl/
+
+download QT Creator and open mentcare/mentcare.prop file

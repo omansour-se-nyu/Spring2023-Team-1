@@ -1,11 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QString>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+
+
     ui->setupUi(this);
 }
 
@@ -110,4 +114,49 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
         }
     }
 }
+
+
+// need to remove, just to make the code compile
+
+void MainWindow::on_pushButton_4_clicked() {
+
+}
+
+void MainWindow::on_pushButton_3_clicked() {
+
+}
+
+void MainWindow::on_LoginButton_clicked() {
+
+}
+
+// code above needs to remove, just to make the code compile
+
+
+// navigate from main page to loing page
+void MainWindow::on_HomePage_ToLoginPage_Button_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->LoginPage);
+}
+
+// handle login logic
+void MainWindow::on_LoginPage_LoginButton_clicked()
+{
+    QString email = ui->LoginPage_LineEdit_Login_Email->text();
+    QString password = ui->LoginPage_LineEdit_Login_Password->text();
+    if(email == "xc1008@nyu.edu" && password == "123456") {
+        QMessageBox::information(this, "Login", "Successful!");
+    } else {
+        QMessageBox::information(this, "Login", "Login Failed, please try again!");
+    }
+}
+
+// navigate from login page to main page
+void MainWindow::on_LoginPage_BackToMainButton_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->HomePage);
+}
+
+
+
 
