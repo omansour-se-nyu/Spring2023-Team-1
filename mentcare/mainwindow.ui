@@ -59,7 +59,7 @@
         <x>20</x>
         <y>20</y>
         <width>160</width>
-        <height>51</height>
+        <height>57</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -137,69 +137,6 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Height (inches)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Weight (lbs)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Social Security Number</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Home Address</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Email Address:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Phone Number:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>Emergency Contact Name:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Emergency Contact Number:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="0">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Emergency Contact Email:</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="1">
         <widget class="QComboBox" name="sex_comboBox">
          <item>
@@ -224,8 +161,22 @@
          </item>
         </widget>
        </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Height (inches)</string>
+         </property>
+        </widget>
+       </item>
        <item row="3" column="1">
         <widget class="QSpinBox" name="height_spinBox"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Weight (lbs)</string>
+         </property>
+        </widget>
        </item>
        <item row="4" column="1">
         <widget class="QSpinBox" name="weight_spinBox">
@@ -234,23 +185,72 @@
          </property>
         </widget>
        </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Social Security Number</string>
+         </property>
+        </widget>
+       </item>
        <item row="5" column="1">
         <widget class="QLineEdit" name="ssn_lineEdit"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Home Address</string>
+         </property>
+        </widget>
        </item>
        <item row="6" column="1">
         <widget class="QLineEdit" name="address_lineEdit"/>
        </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Email Address:</string>
+         </property>
+        </widget>
+       </item>
        <item row="7" column="1">
         <widget class="QLineEdit" name="email_lineEdit"/>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Phone Number:</string>
+         </property>
+        </widget>
        </item>
        <item row="8" column="1">
         <widget class="QLineEdit" name="phone_lineEdit"/>
        </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Emergency Contact Name:</string>
+         </property>
+        </widget>
+       </item>
        <item row="9" column="1">
         <widget class="QLineEdit" name="ec_name_lineEdit"/>
        </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>Emergency Contact Number:</string>
+         </property>
+        </widget>
+       </item>
        <item row="10" column="1">
         <widget class="QLineEdit" name="ec_phone_lineEdit"/>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Emergency Contact Email:</string>
+         </property>
+        </widget>
        </item>
        <item row="11" column="1">
         <widget class="QLineEdit" name="ec_email_lineEdit"/>
@@ -269,6 +269,199 @@
       <property name="text">
        <string>Add Patient</string>
       </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="LoginPage">
+     <widget class="QGroupBox" name="LoginPage_Groupbox">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>170</y>
+        <width>391</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>MentCare Login Form</string>
+      </property>
+      <widget class="QLabel" name="LoginPage_Email_label">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>50</y>
+         <width>49</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Email</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="LoginPage_LineEdit_Login_Email">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>50</y>
+         <width>281</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="LoginPage_Password_Label">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>100</y>
+         <width>49</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Password</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="LoginPage_LineEdit_Login_Password">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>100</y>
+         <width>281</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="LoginPage_LoginButton">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>160</y>
+         <width>161</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Login</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="RegisterPage">
+     <widget class="QGroupBox" name="RegisterPage_Groupbox">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>160</y>
+        <width>391</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>MentCare Login Form</string>
+      </property>
+      <widget class="QLabel" name="RegisterPage_Email_label">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>101</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Email</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="RegisterPage_LineEdit_Login_Email">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>50</y>
+         <width>231</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="RegisterPage_Password_Label">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>100</y>
+         <width>101</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Password</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="RegisterPage_LineEdit_Login_Password">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>100</y>
+         <width>231</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="RegisterPage_LoginButton">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>190</y>
+         <width>161</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Create User</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="RegisterPage_LineEdit_Login_Password_2">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>150</y>
+         <width>231</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="RegisterPage_Password_Label_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>121</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Confirm Password</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="RegisterPage_LoginButton_2">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>190</y>
+         <width>161</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Return to Home</string>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="HomePage">
@@ -297,13 +490,33 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="HomePage_ToLoginPage_Button">
          <property name="text">
           <string>Sign Out</string>
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="HomePage_ToRegisterPage_Button">
+         <property name="text">
+          <string>Register</string>
+         </property>
+        </widget>
+       </item>
       </layout>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>50</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
      </widget>
     </widget>
    </widget>
@@ -315,7 +528,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMentcare">
@@ -327,5 +540,38 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>LoginPage_LineEdit_Login_Password</sender>
+   <signal>returnPressed()</signal>
+   <receiver>LoginPage_LoginButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>466</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>451</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LoginPage_LineEdit_Login_Email</sender>
+   <signal>returnPressed()</signal>
+   <receiver>LoginPage_LoginButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>485</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>462</x>
+     <y>365</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
