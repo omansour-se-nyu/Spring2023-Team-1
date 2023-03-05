@@ -333,23 +333,10 @@
         <enum>QLineEdit::Password</enum>
        </property>
       </widget>
-      <widget class="QPushButton" name="LoginPage_BackToMainButton">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>160</y>
-         <width>161</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Back to Main</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="LoginPage_LoginButton">
        <property name="geometry">
         <rect>
-         <x>200</x>
+         <x>120</x>
          <y>160</y>
          <width>161</width>
          <height>24</height>
@@ -388,16 +375,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
-         <property name="text">
-          <string>Sign Out</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="HomePage_ToLoginPage_Button">
          <property name="text">
-          <string>Login</string>
+          <string>Sign Out</string>
          </property>
         </widget>
        </item>
@@ -433,7 +413,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMentcare">
@@ -445,5 +425,38 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>LoginPage_LineEdit_Login_Password</sender>
+   <signal>returnPressed()</signal>
+   <receiver>LoginPage_LoginButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>466</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>451</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LoginPage_LineEdit_Login_Email</sender>
+   <signal>returnPressed()</signal>
+   <receiver>LoginPage_LoginButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>485</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>462</x>
+     <y>365</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

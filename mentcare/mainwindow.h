@@ -6,9 +6,20 @@
 #include <QSqlDatabase>
 #include <QMessageBox>
 #include <QSqlQuery>
+#include <Qmap>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui {
+    class MainWindow;
+
+    const QMap<QString, QString> fixedLogin = {
+        {QString("ua2047@nyu.edu"), QString("ushan")},
+        {QString("xc1008@nyu.edu"), QString("jeff")},
+        {QString("kod2003@nyu.edu"), QString("kobe")},
+        {QString("kc4302@nyu.edu"), QString("kenneth")},
+        {QString("admin"), QString("pass")}
+    };
+}
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow

@@ -137,6 +137,8 @@ void MainWindow::on_LoginButton_clicked() {
 void MainWindow::on_HomePage_ToLoginPage_Button_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->LoginPage);
+    ui->LoginPage_LineEdit_Login_Password->clear();
+    ui->LoginPage_LineEdit_Login_Email->clear();
 }
 
 // handle login logic
@@ -144,17 +146,19 @@ void MainWindow::on_LoginPage_LoginButton_clicked()
 {
     QString email = ui->LoginPage_LineEdit_Login_Email->text();
     QString password = ui->LoginPage_LineEdit_Login_Password->text();
-    if(email == "xc1008@nyu.edu" && password == "123456") {
+    if (Ui::fixedLogin.find(email) != Ui::fixedLogin.end() && Ui::fixedLogin[email] == password) {
         QMessageBox::information(this, "Login", "Successful!");
+        ui->stackedWidget->setCurrentWidget(ui->HomePage);
     } else {
         QMessageBox::information(this, "Login", "Login Failed, please try again!");
     }
 }
 
 // navigate from login page to main page
+// need to remove this button and code, the login button will check credentials and progress the user
 void MainWindow::on_LoginPage_BackToMainButton_clicked()
 {
-    ui->stackedWidget->setCurrentWidget(ui->HomePage);
+    //ui->stackedWidget->setCurrentWidget(ui->HomePage);
 }
 
 
