@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 
 #include <QString>
 
@@ -11,10 +12,15 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ui->setupUi(this);
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("../mentcare.sqlite");
+    userEmail="";
+    userRole="";
 }
 
 MainWindow::~MainWindow()
 {
+    db.close();
     delete ui;
 }
 
@@ -95,8 +101,7 @@ void MainWindow::on_patientsPage_exit_clicked()
 void MainWindow::on_stackedWidget_currentChanged(int arg1)
 {
     if (arg1 == 0){
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-        db.setDatabaseName("../mentcare.sqlite");
+        //QSqlDatabase
         if (!db.open()){
             QMessageBox::information(this, "Connection", "Unable to Load Database");
             db.close();
@@ -110,7 +115,7 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
             } else {
                  QMessageBox::information(this, "Connection", "Unable to Query Database");
             }
-            db.close();
+
         }
     }
 }
@@ -146,11 +151,22 @@ void MainWindow::on_LoginPage_LoginButton_clicked()
 {
     QString email = ui->LoginPage_LineEdit_Login_Email->text();
     QString password = ui->LoginPage_LineEdit_Login_Password->text();
-    if (Ui::fixedLogin.find(email) != Ui::fixedLogin.end() && Ui::fixedLogin[email] == password) {
-        QMessageBox::information(this, "Login", "Successful!");
-        ui->stackedWidget->setCurrentWidget(ui->HomePage);
+
+    if (!db.open()) {
+        QMessageBox::information(this, "Connection", "Unable to Load Database");
+        db.close();
     } else {
-        QMessageBox::information(this, "Login", "Login Failed, please try again!");
+        QSqlQuery query;
+        query.prepare("SELECT * FROM users WHERE users.email=:loginEmail AND users.password=:loginPassword");
+        query.bindValue(":loginEmail", email);
+        query.bindValue(":loginPassword", password);
+        if (query.exec() && query.next()) {
+            QMessageBox::information(this, "Login", "Successful!");
+            ui->stackedWidget->setCurrentWidget(ui->HomePage);
+            userEmail = email;
+        } else {
+            QMessageBox::information(this, "Login", "Login Failed, please try again!");
+        }
     }
 }
 

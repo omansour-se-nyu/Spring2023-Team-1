@@ -58,5 +58,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    QString userEmail;
+    QString userRole;
+    QSqlDatabase db;
+
 };
 #endif // MAINWINDOW_H
