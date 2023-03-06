@@ -152,20 +152,32 @@ void MainWindow::on_LoginPage_LoginButton_clicked()
     QString email = ui->LoginPage_LineEdit_Login_Email->text();
     QString password = ui->LoginPage_LineEdit_Login_Password->text();
 
+    bool validUser = loginAccess(email, password);
+
+    if (validUser) {
+        QMessageBox::information(this, "Login", "Successful!");
+        ui->stackedWidget->setCurrentWidget(ui->HomePage);
+    } else {
+        QMessageBox::information(this, "Login", "Login Failed, please try again!");
+    }
+}
+
+bool MainWindow::loginAccess(QString email, QString password) {
     if (!db.open()) {
+        //maybe this should be moved to a UI type function?
         QMessageBox::information(this, "Connection", "Unable to Load Database");
         db.close();
+        return false;
     } else {
         QSqlQuery query;
         query.prepare("SELECT * FROM users WHERE users.email=:loginEmail AND users.password=:loginPassword");
         query.bindValue(":loginEmail", email);
         query.bindValue(":loginPassword", password);
         if (query.exec() && query.next()) {
-            QMessageBox::information(this, "Login", "Successful!");
-            ui->stackedWidget->setCurrentWidget(ui->HomePage);
             userEmail = email;
+            return true;
         } else {
-            QMessageBox::information(this, "Login", "Login Failed, please try again!");
+            return false;
         }
     }
 }

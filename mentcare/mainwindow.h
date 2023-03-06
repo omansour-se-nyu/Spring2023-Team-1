@@ -30,6 +30,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    bool loginAccess(QString email, QString password);
+
 private slots:
 
     void on_addPatient_pushButton_clicked();
