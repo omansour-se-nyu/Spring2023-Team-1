@@ -50,13 +50,7 @@ private slots:
 
     void on_stackedWidget_currentChanged(int arg1);
 
-    void on_pushButton_4_clicked();
-
-    void on_LoginButton_clicked();
-
     void on_LoginPage_LoginButton_clicked();
-
-    void on_pushButton_3_clicked();
 
     void on_HomePage_ToLoginPage_Button_clicked();
 
@@ -68,9 +62,11 @@ private slots:
 
     void on_RegisterPage_LoginButton_2_clicked();
 
-    void on_PatientPage_Filter_Patient_Button_clicked();
+//    void on_PatientPage_Filter_Patient_Button_clicked();
 
-    void on_PatientPage_Clear_Filter_Button_clicked();
+//    void on_PatientPage_Clear_Filter_Button_clicked();
+
+    void on_PatientPage_LineEdit_Name_textEdited(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
