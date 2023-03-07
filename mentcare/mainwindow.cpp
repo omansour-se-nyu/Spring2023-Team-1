@@ -42,12 +42,17 @@ void MainWindow::on_addPatientSubmitButton_clicked()
 
     if (ui->name_line_edit_4->text().isEmpty()) {
         ui->name_line_edit_4->setText("This field is required.");
-        requiredFieldsPopulate = false;
+        requiredFieldsPopulated = false;
     }
 
-    if (ui->name_line_edit_4->text().isEmpty()) {
-        ui->name_line_edit_4->setText("This field is required.");
-        requiredFieldsPopulate = false;
+    if (ui->dob_date_edit_4->text().isEmpty()) {
+//        ui->dob_date_edit_4->setText("This field is required.");
+        requiredFieldsPopulated = false;
+    }
+
+    if (ui->ssn_lineEdit->text().isEmpty()) {
+        ui->ssn_lineEdit->setText("This field is required.");
+        requiredFieldsPopulated = false;
     }
 
     if (requiredFieldsPopulated==true)
@@ -97,6 +102,8 @@ void MainWindow::on_addPatientSubmitButton_clicked()
                 db.close();
             }
         }
+    } else {
+        QMessageBox::information(this, "Form incomplete", "Required fields are missing.");
     }
 }
 
