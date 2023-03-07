@@ -192,3 +192,58 @@ void MainWindow::on_LoginPage_BackToMainButton_clicked()
 
 
 
+
+void MainWindow::on_HomePage_ToRegisterPage_Button_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->RegisterPage);
+}
+
+
+void MainWindow::on_RegisterPage_LoginButton_clicked()
+{
+    QString email = ui->RegisterPage_LineEdit_Login_Email->text();
+    QString pass1 = ui->RegisterPage_LineEdit_Login_Password->text();
+    QString pass2 = ui->RegisterPage_LineEdit_Login_Password_2->text();
+    if (pass1!=pass2) {
+        QMessageBox::information(this, "Registration", "Passwords do not match");
+        std::cout << pass1.toStdString() << std::endl << pass2.toStdString();
+    } else {
+        bool userAdded = newUser(email, pass1);
+        if (userAdded) {
+            QMessageBox::information(this, "Registration", "New user added!");
+        } else {
+            QMessageBox::information(this, "Registration", "Unable to add new user");
+        }
+    }
+
+}
+
+bool MainWindow::newUser(QString email, QString password) {
+    if (!db.open()) {
+        //maybe this should be moved to a UI type function?
+        QMessageBox::information(this, "Connection", "Unable to Load Database");
+        db.close();
+        return false;
+    } else {
+        QSqlQuery query;
+        query.prepare("INSERT INTO users (email, password)"
+                      "VALUES (:email, :password)");
+        query.bindValue(":email", email);
+        query.bindValue(":password", password);
+        if (query.exec()) {// && query.next()) {
+            //userEmail = email;
+            std::cout << "success: " << query.lastQuery().toStdString() << std::endl;
+            return true;
+        } else {
+            std::cout << "fail: " << query.lastQuery().toStdString() << std::endl;
+            return false;
+        }
+    }
+}
+
+
+void MainWindow::on_RegisterPage_LoginButton_2_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->HomePage);
+}
+

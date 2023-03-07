@@ -31,6 +31,7 @@ public:
     ~MainWindow();
 
     bool loginAccess(QString email, QString password);
+    bool newUser(QString email, QString password);
 
 private slots:
 
@@ -57,6 +58,12 @@ private slots:
     void on_HomePage_ToLoginPage_Button_clicked();
 
     void on_LoginPage_BackToMainButton_clicked();
+
+    void on_HomePage_ToRegisterPage_Button_clicked();
+
+    void on_RegisterPage_LoginButton_clicked();
+
+    void on_RegisterPage_LoginButton_2_clicked();
 
 private:
     Ui::MainWindow *ui;
