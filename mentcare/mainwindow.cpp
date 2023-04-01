@@ -107,7 +107,7 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
             db.close();
         } else {
             QSqlQuery query;
-            query.prepare("SELECT id, name, dob, phone, email FROM patients");
+            query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients");
             if (query.exec()){
                 QSqlQueryModel * model = new QSqlQueryModel();
                 model->setQuery(query);
@@ -296,5 +296,62 @@ bool MainWindow::newUser(QString email, QString password) {
 void MainWindow::on_RegisterPage_LoginButton_2_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->HomePage);
+}
+
+
+void MainWindow::on_PatientPage_Filter_Patient_Button_clicked()
+{
+
+    //QSqlDatabase
+    if (!db.open()){
+        QMessageBox::information(this, "Connection", "Unable to Load Database");
+        db.close();
+    } else {
+        QString name = ui->PatientPage_LineEdit_Name->text();
+        QString ssn = ui->PatientPage_LineEdit_SSN->text();
+        QString dob = ui->PatientPage_DateEdit_DOB->text();
+
+        QSqlQuery query;
+        query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients WHERE name LIKE :name AND ssn LIKE :ssn AND dob = :dob");
+        query.bindValue(":name", "%" + name + "%");
+        query.bindValue(":ssn", "%" + ssn + "%");
+        query.bindValue(":dob", dob);
+        if (query.exec()){
+            QSqlQueryModel * model = new QSqlQueryModel();
+            model->setQuery(query);
+            ui->tableView->setModel(model);
+        } else {
+             QMessageBox::information(this, "Connection", "Unable to Query Database");
+        }
+
+    }
+
+}
+
+
+void MainWindow::on_PatientPage_Clear_Filter_Button_clicked()
+{
+    //QSqlDatabase
+    if (!db.open()){
+        QMessageBox::information(this, "Connection", "Unable to Load Database");
+        db.close();
+    } else {
+
+        ui->PatientPage_LineEdit_Name->clear();
+        ui->PatientPage_LineEdit_SSN->clear();
+        ui->PatientPage_DateEdit_DOB->clear();
+
+        QSqlQuery query;
+        query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients");
+        if (query.exec()){
+            QSqlQueryModel * model = new QSqlQueryModel();
+            model->setQuery(query);
+            ui->tableView->setModel(model);
+        } else {
+             QMessageBox::information(this, "Connection", "Unable to Query Database");
+        }
+
+    }
+
 }
 
