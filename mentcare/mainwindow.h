@@ -68,6 +68,10 @@ private slots:
 
     void on_RegisterPage_LoginButton_2_clicked();
 
+    void on_PatientPage_Filter_Patient_Button_clicked();
+
+    void on_PatientPage_Clear_Filter_Button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
