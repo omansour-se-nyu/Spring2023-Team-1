@@ -182,6 +182,8 @@ bool MainWindow::loginAccess(QString email, QString password) {
     }
 }
 
+
+
 // navigate from login page to main page
 // need to remove this button and code, the login button will check credentials and progress the user
 void MainWindow::on_LoginPage_BackToMainButton_clicked()
@@ -189,9 +191,24 @@ void MainWindow::on_LoginPage_BackToMainButton_clicked()
     //ui->stackedWidget->setCurrentWidget(ui->HomePage);
 }
 
-
-
-
+bool MainWindow::checkEmailInDatabase(QString email)
+{
+    if (!db.open()) {
+        //maybe this should be moved to a UI type function?
+        QMessageBox::information(this, "Connection", "Unable to Load Database");
+        db.close();
+        return false;
+    } else {
+        QSqlQuery query;
+        query.prepare("SELECT * FROM users WHERE users.email=:loginEmail");
+        query.bindValue(":loginEmail", email);
+        if (query.exec() && query.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
 
 void MainWindow::on_HomePage_ToRegisterPage_Button_clicked()
 {
@@ -204,18 +221,52 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
     QString email = ui->RegisterPage_LineEdit_Login_Email->text();
     QString pass1 = ui->RegisterPage_LineEdit_Login_Password->text();
     QString pass2 = ui->RegisterPage_LineEdit_Login_Password_2->text();
-    if (pass1!=pass2) {
+
+    if (email == "") {
+        QMessageBox::information(this, "Registration", "Email cannot be empty");
+    } else if(this->checkEmailFormat(email) == false) {
+        QMessageBox::information(this, "Registration", "Invalid email format");
+    } else if(this ->checkEmailInDatabase(email) == true) {
+        QMessageBox::information(this, "Registration", "Email registered!");
+    } else if(pass1 == "") {
+        QMessageBox::information(this, "Registration", "Password cannot be empty");
+    } else if (pass1.length() < 6) {
+        QMessageBox::information(this, "Registration", "Password length need to be at least 6");
+    } else if (pass1!=pass2) {
         QMessageBox::information(this, "Registration", "Passwords do not match");
         std::cout << pass1.toStdString() << std::endl << pass2.toStdString();
     } else {
         bool userAdded = newUser(email, pass1);
         if (userAdded) {
-            QMessageBox::information(this, "Registration", "New user added!");
+            QMessageBox::information(this, "Registration", "New user " + email + " added");
+            ui->RegisterPage_LineEdit_Login_Email->clear();
+            ui->RegisterPage_LineEdit_Login_Password->clear();
+            ui->RegisterPage_LineEdit_Login_Password_2->clear();
         } else {
             QMessageBox::information(this, "Registration", "Unable to add new user");
         }
     }
 
+}
+
+bool MainWindow::checkEmailFormat(QString email)
+{
+    QRegularExpression emailPattern(R"(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)");
+
+    if (!emailPattern.match(email).hasMatch())
+    {
+        qDebug() << "Invalid email format";
+        // Do something if the email format is invalid
+        std::cout << "false";
+        return false;
+    }
+    else
+    {
+        qDebug() << "Valid email format";
+        // Do something if the email format is vali
+        std::cout << "true";
+        return true;
+    }
 }
 
 bool MainWindow::newUser(QString email, QString password) {
