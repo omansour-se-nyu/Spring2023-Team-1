@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <Qmap>
+#include <QRegularExpression>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,6 +33,8 @@ public:
 
     bool loginAccess(QString email, QString password);
     bool newUser(QString email, QString password);
+    bool checkEmailFormat(QString email);
+    bool checkEmailInDatabase(QString email);
 
 private slots:
 
