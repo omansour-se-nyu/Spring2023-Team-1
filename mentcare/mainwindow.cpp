@@ -1,8 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "AddPatient.h"
 #include <iostream>
 
-#include <QString>
+#include <Qstring>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -32,57 +33,107 @@ void MainWindow::on_addPatient_pushButton_clicked()
 
 void MainWindow::on_addPatientCancelButton_clicked()
 {
-    ui->stackedWidget->setCurrentWidget(ui->HomePage);
+    ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
 }
 
 
 void MainWindow::on_addPatientSubmitButton_clicked()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../mentcare.sqlite");
-    if (!db.open()){
-        QMessageBox::information(this, "Connection", "Unable to Load Database");
-        db.close();
+    PatientInfo patientInfo;
+    patientInfo.patientFirstName = ui->firstName_lineEdit->text();
+    patientInfo.patientLastName = ui->lastName_lineEdit->text();
+    patientInfo.patientDOB = ui->dob_date_edit_4->text();
+    patientInfo.patientSex = ui->sex_comboBox->currentText();
+    patientInfo.patientHeight = ui->height_spinBox->text();
+    patientInfo.patientWeight = ui->weight_spinBox->text();
+    patientInfo.patientSSN = ui->ssn_lineEdit->text();
+    patientInfo.patientAddress = ui->address_lineEdit->text();
+    patientInfo.patientCity = ui->city_lineEdit->text();
+    patientInfo.patientZip = ui->zipcode_lineEdit->text();
+    patientInfo.patientEmail = ui->email_lineEdit->text();
+    patientInfo.patientPhone = ui->phone_lineEdit->text();
+    patientInfo.emergencyFirstName = ui->ec_firstName_lineEdit->text();
+    patientInfo.emergencyLastName = ui->ec_lastName_lineEdit->text();
+    patientInfo.emergencyPhone = ui->ec_phone_lineEdit->text();
+    patientInfo.emergencyEmail = ui->ec_email_lineEdit->text();
+
+    bool addedPatient = patientInfo.handleAddPatient(patientInfo, db);
+
+    if (addedPatient){
+        QMessageBox::information(this, "Inserted", "Successfully added patient!");
+        ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
+
     } else {
-        QString patientName = ui->name_line_edit_4->text();
-        QString patientDOB = ui->dob_date_edit_4->text();
-        QString patientSex = ui->sex_comboBox->currentText();
-        QString patientHeight = ui->height_spinBox->text();
-        QString patientWeight = ui->weight_spinBox->text();
-        QString patientSSN = ui->ssn_lineEdit->text();
-        QString patientAddress = ui->address_lineEdit->text();
-        QString patientEmail = ui->email_lineEdit->text();
-        QString patientPhone = ui->phone_lineEdit->text();
-        QString emergencyName = ui->ec_name_lineEdit->text();
-        QString emergencyPhone = ui->ec_phone_lineEdit->text();
-        QString emergencyEmail = ui->ec_email_lineEdit->text();
-
-        QSqlQuery query;
-        query.prepare("INSERT INTO patients (name, dob, sex, height, weight, ssn, address, email, phone, ec_name, ec_phone, ec_email)"
-                      "VALUES (:name, :dob, :sex, :height, :weight, :ssn, :address, :email, :phone, :ec_name, :ec_phone, :ec_email)");
-        query.bindValue(":name",  patientName);
-        query.bindValue(":dob", patientDOB);
-        query.bindValue(":sex", patientSex);
-        query.bindValue(":height", patientHeight);
-        query.bindValue(":weight", patientWeight);
-        query.bindValue(":ssn", patientSSN);
-        query.bindValue(":address", patientAddress);
-        query.bindValue(":email", patientEmail);
-        query.bindValue(":phone", patientPhone);
-        query.bindValue(":ec_name", emergencyEmail);
-        query.bindValue(":ec_phone", emergencyPhone);
-        query.bindValue(":ec_email", emergencyEmail);
-
-        if (query.exec()){
-            QMessageBox::information(this, "Inserted", "Successfully Added Patient");
-            db.close();
-            ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
-
-        } else {
-            QMessageBox::information(this, "Not Inserted", "Could Not Add Patient");
-            db.close();
-        }
+        QMessageBox::information(this, "Not Inserted", "Could not add patient, please check for errors or duplicate entry.");
     }
+
+//    bool requiredFieldsPopulated = true;
+
+//    if (ui->firstName_lineEdit->text().isEmpty()) {
+//        ui->firstName_lineEdit->setText("This field is required.");
+//        requiredFieldsPopulated = false;
+//    }
+
+//    if (ui->dob_date_edit_4->text().isEmpty()) {
+////        ui->dob_date_edit_4->setText("This field is required.");
+//        requiredFieldsPopulated = false;
+//    }
+
+//    if (ui->ssn_lineEdit->text().isEmpty()) {
+//        ui->ssn_lineEdit->setText("This field is required.");
+//        requiredFieldsPopulated = false;
+//    }
+
+//    if (requiredFieldsPopulated==true)
+//    {
+//        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+//        db.setDatabaseName("../mentcare.sqlite");
+//        if (!db.open()){
+//            QMessageBox::information(this, "Connection", "Unable to Load Database");
+//            db.close();
+//        } else {
+//            QString patientName = ui->firstName_lineEdit->text();
+//            QString patientDOB = ui->dob_date_edit_4->text();
+//            QString patientSex = ui->sex_comboBox->currentText();
+//            QString patientHeight = ui->height_spinBox->text();
+//            QString patientWeight = ui->weight_spinBox->text();
+//            QString patientSSN = ui->ssn_lineEdit->text();
+//            QString patientAddress = ui->address_lineEdit->text();
+//            QString patientEmail = ui->email_lineEdit->text();
+//            QString patientPhone = ui->phone_lineEdit->text();
+//            QString emergencyName = ui->ec_name_lineEdit->text();
+//            QString emergencyPhone = ui->ec_phone_lineEdit->text();
+//            QString emergencyEmail = ui->ec_email_lineEdit->text();
+
+//            QSqlQuery query;
+//            query.prepare("INSERT INTO patients (name, dob, sex, height, weight, ssn, address, email, phone, ec_name, ec_phone, ec_email)"
+//                          "VALUES (:name, :dob, :sex, :height, :weight, :ssn, :address, :email, :phone, :ec_name, :ec_phone, :ec_email)");
+//            query.bindValue(":name",  patientName);
+//            query.bindValue(":dob", patientDOB);
+//            query.bindValue(":sex", patientSex);
+//            query.bindValue(":height", patientHeight);
+//            query.bindValue(":weight", patientWeight);
+//            query.bindValue(":ssn", patientSSN);
+//            query.bindValue(":address", patientAddress);
+//            query.bindValue(":email", patientEmail);
+//            query.bindValue(":phone", patientPhone);
+//            query.bindValue(":ec_name", emergencyName);
+//            query.bindValue(":ec_phone", emergencyPhone);
+//            query.bindValue(":ec_email", emergencyEmail);
+
+//            if (query.exec()){
+//                QMessageBox::information(this, "Inserted", "Successfully Added Patient");
+//                db.close();
+//                ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
+
+//            } else {
+//                QMessageBox::information(this, "Not Inserted", "Could Not Add Patient");
+//                db.close();
+//            }
+//        }
+//    } else {
+//        QMessageBox::information(this, "Form incomplete", "Required fields are missing.");
+//    }
 }
 
 
@@ -107,7 +158,7 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
             db.close();
         } else {
             QSqlQuery query;
-            query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients");
+            query.prepare("SELECT id, first_name, last_name, email, dob, phone FROM patients");
             if (query.exec()){
                 QSqlQueryModel * model = new QSqlQueryModel();
                 model->setQuery(query);
@@ -119,24 +170,6 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
         }
     }
 }
-
-
-// need to remove, just to make the code compile
-
-void MainWindow::on_pushButton_4_clicked() {
-
-}
-
-void MainWindow::on_pushButton_3_clicked() {
-
-}
-
-void MainWindow::on_LoginButton_clicked() {
-
-}
-
-// code above needs to remove, just to make the code compile
-
 
 // navigate from main page to loing page
 void MainWindow::on_HomePage_ToLoginPage_Button_clicked()
@@ -299,23 +332,74 @@ void MainWindow::on_RegisterPage_LoginButton_2_clicked()
 }
 
 
-void MainWindow::on_PatientPage_Filter_Patient_Button_clicked()
-{
+//void MainWindow::on_PatientPage_Filter_Patient_Button_clicked()
+//{
 
-    //QSqlDatabase
+//    //QSqlDatabase
+//    if (!db.open()){
+//        QMessageBox::information(this, "Connection", "Unable to Load Database");
+//        db.close();
+//    } else {
+//        QString name = ui->PatientPage_LineEdit_Name->text();
+//        QString ssn = ui->PatientPage_LineEdit_SSN->text();
+//        QString dob = ui->PatientPage_DateEdit_DOB->text();
+
+//        QSqlQuery query;
+//        query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients WHERE name LIKE :name OR ssn LIKE :ssn OR dob = :dob");
+//        query.bindValue(":name", "%" + name + "%");
+//        query.bindValue(":ssn", "%" + ssn + "%");
+//        query.bindValue(":dob", dob);
+//        if (query.exec()){
+//            QSqlQueryModel * model = new QSqlQueryModel();
+//            model->setQuery(query);
+//            ui->tableView->setModel(model);
+//        } else {
+//             QMessageBox::information(this, "Connection", "Unable to Query Database");
+//        }
+
+//    }
+
+//}
+
+
+//void MainWindow::on_PatientPage_Clear_Filter_Button_clicked()
+//{
+//    //QSqlDatabase
+//    if (!db.open()){
+//        QMessageBox::information(this, "Connection", "Unable to Load Database");
+//        db.close();
+//    } else {
+
+//        ui->PatientPage_LineEdit_Name->clear();
+//        ui->PatientPage_LineEdit_SSN->clear();
+//        ui->PatientPage_DateEdit_DOB->clear();
+
+//        QSqlQuery query;
+//        query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients");
+//        if (query.exec()){
+//            QSqlQueryModel * model = new QSqlQueryModel();
+//            model->setQuery(query);
+//            ui->tableView->setModel(model);
+//        } else {
+//             QMessageBox::information(this, "Connection", "Unable to Query Database");
+//        }
+
+//    }
+
+//}
+
+
+void MainWindow::on_PatientPage_LineEdit_Name_textEdited(const QString &arg1)
+{
     if (!db.open()){
         QMessageBox::information(this, "Connection", "Unable to Load Database");
         db.close();
     } else {
         QString name = ui->PatientPage_LineEdit_Name->text();
-        QString ssn = ui->PatientPage_LineEdit_SSN->text();
-        QString dob = ui->PatientPage_DateEdit_DOB->text();
 
         QSqlQuery query;
-        query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients WHERE name LIKE :name AND ssn LIKE :ssn AND dob = :dob");
+        query.prepare("SELECT id, first_name, last_name, dob, email, phone FROM patients WHERE first_name LIKE :name");
         query.bindValue(":name", "%" + name + "%");
-        query.bindValue(":ssn", "%" + ssn + "%");
-        query.bindValue(":dob", dob);
         if (query.exec()){
             QSqlQueryModel * model = new QSqlQueryModel();
             model->setQuery(query);
@@ -323,35 +407,6 @@ void MainWindow::on_PatientPage_Filter_Patient_Button_clicked()
         } else {
              QMessageBox::information(this, "Connection", "Unable to Query Database");
         }
-
     }
-
-}
-
-
-void MainWindow::on_PatientPage_Clear_Filter_Button_clicked()
-{
-    //QSqlDatabase
-    if (!db.open()){
-        QMessageBox::information(this, "Connection", "Unable to Load Database");
-        db.close();
-    } else {
-
-        ui->PatientPage_LineEdit_Name->clear();
-        ui->PatientPage_LineEdit_SSN->clear();
-        ui->PatientPage_DateEdit_DOB->clear();
-
-        QSqlQuery query;
-        query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients");
-        if (query.exec()){
-            QSqlQueryModel * model = new QSqlQueryModel();
-            model->setQuery(query);
-            ui->tableView->setModel(model);
-        } else {
-             QMessageBox::information(this, "Connection", "Unable to Query Database");
-        }
-
-    }
-
 }
 
