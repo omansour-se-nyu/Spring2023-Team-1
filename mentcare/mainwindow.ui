@@ -18,21 +18,14 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="PatientsPage">
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="PatientPage_Name_Filter_Label">
+        <item row="0" column="2">
+         <widget class="QPushButton" name="addPatient_pushButton">
           <property name="text">
-           <string>Patient Name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="3">
-         <widget class="QPushButton" name="patientsPage_exit">
-          <property name="text">
-           <string>Exit</string>
+           <string>Add a New Patient</string>
           </property>
          </widget>
         </item>
@@ -40,12 +33,33 @@
          <widget class="QLineEdit" name="PatientPage_LineEdit_Name"/>
         </item>
         <item row="2" column="0" colspan="3">
-         <widget class="QTableView" name="tableView"/>
+         <widget class="QTableView" name="tableView">
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+         </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="addPatient_pushButton">
+        <item row="4" column="0" colspan="3">
+         <widget class="QPushButton" name="patientsPage_exit">
           <property name="text">
-           <string>Add a New Patient</string>
+           <string>Exit</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="PatientPage_Name_Filter_Label">
+          <property name="text">
+           <string>Patient Name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="goToPatientInfo_button">
+          <property name="text">
+           <string>See patient info</string>
           </property>
          </widget>
         </item>
@@ -62,6 +76,296 @@
         <property name="text">
          <string/>
         </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="PatientInfoPage">
+       <widget class="QGroupBox" name="bio_groupBox">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>361</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Biographical</string>
+        </property>
+        <widget class="QWidget" name="formLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>351</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="name_label">
+            <property name="text">
+             <string>Full Name:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="name_display">
+            <property name="text">
+             <string>Kenneth Chung</string>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="dob_label">
+              <property name="text">
+               <string>Date of Birth:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDateEdit" name="dob_display">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::NoButtons</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sex_label">
+              <property name="text">
+               <string>Sex:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="sex_display">
+              <property name="text">
+               <string>M</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="ssn_label">
+              <property name="text">
+               <string>SSN:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="ssn_display">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="toggleVisible_snn_button">
+              <property name="text">
+               <string>show</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="contactInfo_groupBox">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>150</y>
+          <width>391</width>
+          <height>251</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Contact Info</string>
+        </property>
+        <widget class="QGroupBox" name="emergencyContact_groupBox">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>120</y>
+           <width>311</width>
+           <height>121</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Emergency Contact Info</string>
+         </property>
+         <widget class="QWidget" name="formLayoutWidget_3">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>30</y>
+            <width>221</width>
+            <height>82</height>
+           </rect>
+          </property>
+          <layout class="QFormLayout" name="formLayout_5">
+           <item row="1" column="0">
+            <widget class="QLabel" name="ec_phone_label">
+             <property name="text">
+              <string>Phone:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="ec_phone_display">
+             <property name="text">
+              <string>800-555-5555</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="ec_email_label">
+             <property name="text">
+              <string>e-mail:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="ec_email_display">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="ec_name_label">
+             <property name="text">
+              <string>Full Name:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="ec_name_display">
+             <property name="text">
+              <string>Someone Else</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="address_groupBox">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>181</width>
+           <height>81</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Home Address</string>
+         </property>
+         <widget class="QWidget" name="verticalLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>20</y>
+            <width>181</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QLineEdit" name="street_display">
+             <property name="text">
+              <string>6 MetroTech Center</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLineEdit" name="city_display">
+               <property name="text">
+                <string>Brooklyn</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="state_display">
+               <property name="text">
+                <string>NY</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="zip_display">
+               <property name="text">
+                <string>11201</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="formLayoutWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>40</y>
+           <width>201</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="phone_label">
+            <property name="text">
+             <string>Phone:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="phone_display">
+            <property name="text">
+             <string>800-888-8888</string>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="email_label">
+            <property name="text">
+             <string>e-mail:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="email_display">
+            <property name="text">
+             <string>kc4302@nyu.edu</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="AddPatientPage">

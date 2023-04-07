@@ -68,6 +68,14 @@ private slots:
 
     void on_PatientPage_LineEdit_Name_textEdited(const QString &arg1);
 
+//    void on_show_snn_button_toggled(bool checked);
+
+    void on_toggleVisible_snn_button_toggled(bool checked);
+
+//    void on_toggleVisible_snn_button_clicked();
+
+    void on_goToPatientInfo_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 

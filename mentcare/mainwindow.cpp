@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <Qstring>
+#include <string>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -408,5 +409,27 @@ void MainWindow::on_PatientPage_LineEdit_Name_textEdited(const QString &arg1)
              QMessageBox::information(this, "Connection", "Unable to Query Database");
         }
     }
+}
+
+
+
+
+
+void MainWindow::on_toggleVisible_snn_button_toggled(bool checked)
+{
+    ui->ssn_display->setText("SSN visible");
+    ui->toggleVisible_snn_button->setText("hide");
+}
+
+
+void MainWindow::on_goToPatientInfo_button_clicked()
+{
+    int selectedPatientId = ui->tableView->selectionModel()->selectedRows(0).value(0).data().toInt();
+    ui->stackedWidget->setCurrentWidget(ui->PatientInfoPage);
+
+    ui->name_display->setText("you selected " + QString::number(selectedPatientId));
+
+//    populatePatientInfoPage(this, int patientId, QSqlDatabase db);
+
 }
 

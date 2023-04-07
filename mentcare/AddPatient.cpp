@@ -1,5 +1,5 @@
 #include "AddPatient.h"
-
+#include "mainwindow.h"
 
 bool PatientInfo::handleAddPatient(PatientInfo patientInfo, QSqlDatabase db){
     bool detailsAreValid = validatePatientDetails(patientInfo, db);
@@ -143,10 +143,33 @@ bool PatientInfo::hasValidZipCode(QString zipcode){
 }
 
 bool PatientInfo::hasValidNumber(QString number){
-    static QRegularExpression zipPattern(R"(\d\d\d\d\d\d\d\d\d)");
+    static QRegularExpression zipPattern(R"(\d\d\d\d\d\d\d\d\d\d)");
     if (zipPattern.match(number).hasMatch()){
         return true;
     } else {
         return false;
     }
+}
+
+
+
+void PatientInfo::populatePatientInfoPage(int patientId, QSqlDatabase db) {
+
+//    PatientInfo currentPatient;
+
+//    if (!db.open()) {
+//        db.close();
+//        return;
+//    } else {
+//        QSqlQuery query;
+//        query.prepare("SELECT first_name FROM patients WHERE patients.id=:id");
+//        query.bindValue(":id", patientId);
+//        query.exec();
+
+
+
+//        w.ui->name_display->setText(query.value(0).toString());
+//    }
+
+
 }
