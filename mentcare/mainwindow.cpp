@@ -169,6 +169,76 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
             }
 
         }
+    } else if (arg1 == 1) {
+        QString title = windowTitle();
+
+        QStringList parts = title.split(","); // Split the title string using comma delimiter
+        QString patientIdString = parts.at(1).trimmed(); // Extract the second part and remove whitespace
+
+        int id = patientIdString.toInt(); // Convert the patient id string to an integer
+
+        std::cout << id << std::endl;
+        // Define the query string
+        QString queryString = "SELECT * FROM patients WHERE id=:id";
+
+        // Prepare the query
+        QSqlQuery query;
+        query.prepare(queryString);
+
+        // Bind the id value
+        query.bindValue(":id", id);
+
+        // Execute the query
+        if (query.exec())
+        {
+            std::cout << "query executes!!!!" << std::endl;
+            // Iterate over the results
+
+            // Check the number of rows returned by the query
+             int numRows = query.size();
+             std::cout << "Number of rows returned: " << numRows << std::endl;
+
+            while (query.next())
+            {
+                // Read the values into temporary variables
+                 QString firstName = query.value("first_name").toString();
+                 QString dob = query.value("dob").toString();
+                 QString lastName = query.value("last_name").toString();
+                 QString ssn = query.value("ssn").toString();
+                 QString city = query.value("city").toString();
+                 QString streetAddress = query.value("street_address").toString();
+                 QString zipCode = query.value("zip_code").toString();
+                 QString email = query.value("email").toString();
+                 QString phone = query.value("phone").toString();
+                 QString ecFirstName = query.value("ec_first_name").toString();
+                 QString ecLastName = query.value("ec_last_name").toString();
+                 QString ecPhone = query.value("ec_phone").toString();
+                 QString ecEmail = query.value("ec_email").toString();
+
+                 // Use the variables as needed
+                 QString patientName = lastName + ", " + firstName;
+                 ui->patientInfo_name_display->setText(patientName);
+                 ui->patientInfo_ssn_display->setText(ssn);
+                 ui->patientInfo_city_display->setText(city);
+                 ui->patientInfo_email_display->setText(email);
+                 ui->patientInfo_phone_display->setText(phone);
+
+                QString ec_name = ecFirstName + ", " + ecLastName;
+                ui -> patientInfo_ec_name_display -> setText(ec_name);
+                ui->patientInfo_ec_phone_display->setText(ecPhone);
+                ui->patientInfo_ec_email_display->setText(ecEmail);
+
+                ui->patientInfo_zip_display->setText(zipCode);
+                ui->patientInfo_street_display->setText(streetAddress);
+                ui->patientInfo_city_display->setText(city);
+                ui->patientInfo_dob_display->setText(dob);
+
+            }
+        }
+        else
+        {
+            QMessageBox::information(this, "Connection", "Unable to Query Database");
+        }
     }
 }
 
@@ -413,23 +483,78 @@ void MainWindow::on_PatientPage_LineEdit_Name_textEdited(const QString &arg1)
 
 
 
-
-
 void MainWindow::on_toggleVisible_snn_button_toggled(bool checked)
 {
-    ui->ssn_display->setText("SSN visible");
-    ui->toggleVisible_snn_button->setText("hide");
+//    ui->ssn_display->setText("SSN visible");
+//    ui->toggleVisible_snn_button->setText("hide");
 }
+
+
+
+//void PatientInfoPage::showEvent(QShowEvent* event) {
+
+
+//}
+
+/*
+void PatientInfoPage::showEvent(QShowEvent* event)
+{
+    // Call the base class implementation of showEvent()
+    QWidget::showEvent(event);
+
+    // Get the selected patient ID
+    int selectedPatientId = this->property("selectedPatientId").toInt();
+
+    // Create a SQL query
+    QSqlQuery query;
+    query.prepare("SELECT * FROM Patients WHERE id = :patientId");
+    query.bindValue(":patientId", selectedPatientId);
+
+    // Execute the query
+    if(query.exec())
+    {
+        // Retrieve the results
+        if(query.next())
+        {
+            // Set the patient information in the widget
+            setPatientInfo(query.value("name").toString(), query.value("age").toInt(), query.value("gender").toString());
+        }
+    }
+    else
+    {
+        // Display an error message if the query failed
+        QMessageBox::warning(this, "Error", "Failed to retrieve patient information.");
+    }
+}
+
+ */
 
 
 void MainWindow::on_goToPatientInfo_button_clicked()
 {
-    int selectedPatientId = ui->tableView->selectionModel()->selectedRows(0).value(0).data().toInt();
+
+    QString patientId = ui->PatientsPage_LineEdit_Lookup_id->text();
+
+    QString title = "Patient id, " + patientId;
+
+    setWindowTitle(title);
+
     ui->stackedWidget->setCurrentWidget(ui->PatientInfoPage);
-
-    ui->name_display->setText("you selected " + QString::number(selectedPatientId));
-
-//    populatePatientInfoPage(this, int patientId, QSqlDatabase db);
 
 }
 
+
+void MainWindow::on_PatientInfoPage_windowIconTextChanged(const QString &iconText)
+{
+
+}
+
+void MainWindow::on_PatientInfoPage_windowTitleChanged(QString const& title) {
+
+}
+
+
+void MainWindow::on_patientInfo_back_button_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->HomePage);
+}

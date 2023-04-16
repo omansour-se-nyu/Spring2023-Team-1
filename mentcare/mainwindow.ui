@@ -15,24 +15,21 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="0" column="1">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="PatientsPage">
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="2">
-         <widget class="QPushButton" name="addPatient_pushButton">
+        <item row="0" column="0">
+         <widget class="QLabel" name="PatientPage_Name_Filter_Label">
           <property name="text">
-           <string>Add a New Patient</string>
+           <string>Patient Name</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="PatientPage_LineEdit_Name"/>
-        </item>
-        <item row="2" column="0" colspan="3">
+        <item row="2" column="0" colspan="4">
          <widget class="QTableView" name="tableView">
           <property name="selectionMode">
            <enum>QAbstractItemView::SingleSelection</enum>
@@ -42,24 +39,30 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="3">
+        <item row="0" column="2">
+         <widget class="QLineEdit" name="PatientPage_LineEdit_Name"/>
+        </item>
+        <item row="0" column="3">
+         <widget class="QPushButton" name="addPatient_pushButton">
+          <property name="text">
+           <string>Add a New Patient</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="4">
          <widget class="QPushButton" name="patientsPage_exit">
           <property name="text">
            <string>Exit</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="PatientPage_Name_Filter_Label">
-          <property name="text">
-           <string>Patient Name</string>
-          </property>
-         </widget>
+        <item row="3" column="3">
+         <widget class="QLineEdit" name="PatientsPage_LineEdit_Lookup_id"/>
         </item>
-        <item row="3" column="0">
+        <item row="3" column="0" colspan="3">
          <widget class="QPushButton" name="goToPatientInfo_button">
           <property name="text">
-           <string>See patient info</string>
+           <string>Viw Patient Information By User Id</string>
           </property>
          </widget>
         </item>
@@ -97,19 +100,19 @@
            <x>0</x>
            <y>20</y>
            <width>351</width>
-           <height>101</height>
+           <height>133</height>
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <item row="0" column="0">
-           <widget class="QLabel" name="name_label">
+           <widget class="QLabel" name="patientInfo_name_label">
             <property name="text">
              <string>Full Name:</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="name_display">
+           <widget class="QLineEdit" name="patientInfo_name_display">
             <property name="text">
              <string>Kenneth Chung</string>
             </property>
@@ -121,31 +124,24 @@
           <item row="1" column="0" colspan="2">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QLabel" name="dob_label">
+             <widget class="QLabel" name="patientInfo_dob_label">
               <property name="text">
                <string>Date of Birth:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="dob_display">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="buttonSymbols">
-               <enum>QAbstractSpinBox::NoButtons</enum>
-              </property>
-             </widget>
+             <widget class="QLineEdit" name="patientInfo_dob_display"/>
             </item>
             <item>
-             <widget class="QLabel" name="sex_label">
+             <widget class="QLabel" name="patientInfo_sex_label">
               <property name="text">
                <string>Sex:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="sex_display">
+             <widget class="QLineEdit" name="patientInfo_sex_display">
               <property name="text">
                <string>M</string>
               </property>
@@ -156,26 +152,19 @@
           <item row="2" column="0" colspan="2">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="QLabel" name="ssn_label">
+             <widget class="QLabel" name="patientInfo_ssn_label">
               <property name="text">
                <string>SSN:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="ssn_display">
+             <widget class="QLineEdit" name="patientInfo_ssn_display">
               <property name="text">
                <string/>
               </property>
               <property name="echoMode">
-               <enum>QLineEdit::Password</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="toggleVisible_snn_button">
-              <property name="text">
-               <string>show</string>
+               <enum>QLineEdit::Normal</enum>
               </property>
              </widget>
             </item>
@@ -189,7 +178,7 @@
          <rect>
           <x>0</x>
           <y>150</y>
-          <width>391</width>
+          <width>661</width>
           <height>251</height>
          </rect>
         </property>
@@ -219,45 +208,45 @@
           </property>
           <layout class="QFormLayout" name="formLayout_5">
            <item row="1" column="0">
-            <widget class="QLabel" name="ec_phone_label">
+            <widget class="QLabel" name="patientInfo_ec_phone_label">
              <property name="text">
               <string>Phone:</string>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="ec_phone_display">
+            <widget class="QLineEdit" name="patientInfo_ec_phone_display">
              <property name="text">
               <string>800-555-5555</string>
              </property>
              <property name="readOnly">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="ec_email_label">
+            <widget class="QLabel" name="patientInfo_ec_email_label">
              <property name="text">
-              <string>e-mail:</string>
+              <string>E-mail:</string>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="ec_email_display">
+            <widget class="QLineEdit" name="patientInfo_ec_email_display">
              <property name="text">
               <string/>
              </property>
             </widget>
            </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="ec_name_label">
+            <widget class="QLabel" name="patientInfo_ec_name_label">
              <property name="text">
               <string>Full Name:</string>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="ec_name_display">
+            <widget class="QLineEdit" name="patientInfo_ec_name_display">
              <property name="text">
               <string>Someone Else</string>
              </property>
@@ -271,7 +260,7 @@
           <rect>
            <x>0</x>
            <y>20</y>
-           <width>181</width>
+           <width>371</width>
            <height>81</height>
           </rect>
          </property>
@@ -283,13 +272,13 @@
            <rect>
             <x>0</x>
             <y>20</y>
-            <width>181</width>
+            <width>351</width>
             <height>61</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
-            <widget class="QLineEdit" name="street_display">
+            <widget class="QLineEdit" name="patientInfo_street_display">
              <property name="text">
               <string>6 MetroTech Center</string>
              </property>
@@ -298,21 +287,21 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
-              <widget class="QLineEdit" name="city_display">
+              <widget class="QLineEdit" name="patientInfo_city_display">
                <property name="text">
                 <string>Brooklyn</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="state_display">
+              <widget class="QLineEdit" name="patientInfo_state_display">
                <property name="text">
                 <string>NY</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="zip_display">
+              <widget class="QLineEdit" name="patientInfo_zip_display">
                <property name="text">
                 <string>11201</string>
                </property>
@@ -326,39 +315,42 @@
         <widget class="QWidget" name="formLayoutWidget_2">
          <property name="geometry">
           <rect>
-           <x>190</x>
-           <y>40</y>
+           <x>390</x>
+           <y>30</y>
            <width>201</width>
            <height>61</height>
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_3">
           <item row="0" column="0">
-           <widget class="QLabel" name="phone_label">
+           <widget class="QLabel" name="patientInfo_phone_label">
             <property name="text">
              <string>Phone:</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="phone_display">
+           <widget class="QLineEdit" name="patientInfo_phone_display">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="text">
              <string>800-888-8888</string>
             </property>
             <property name="readOnly">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="email_label">
+           <widget class="QLabel" name="patientInfo_email_label">
             <property name="text">
-             <string>e-mail:</string>
+             <string>E-mail:</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="email_display">
+           <widget class="QLineEdit" name="patientInfo_email_display">
             <property name="text">
              <string>kc4302@nyu.edu</string>
             </property>
@@ -366,6 +358,19 @@
           </item>
          </layout>
         </widget>
+       </widget>
+       <widget class="QPushButton" name="patientInfo_back_button">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>370</y>
+          <width>191</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Back</string>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="AddPatientPage">
@@ -767,7 +772,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMentcare">
@@ -823,12 +828,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>466</x>
-     <y>333</y>
+     <x>89</x>
+     <y>66</y>
     </hint>
     <hint type="destinationlabel">
-     <x>451</x>
-     <y>395</y>
+     <x>89</x>
+     <y>70</y>
     </hint>
    </hints>
   </connection>
@@ -839,12 +844,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>485</x>
-     <y>283</y>
+     <x>89</x>
+     <y>63</y>
     </hint>
     <hint type="destinationlabel">
-     <x>462</x>
-     <y>395</y>
+     <x>89</x>
+     <y>70</y>
     </hint>
    </hints>
   </connection>

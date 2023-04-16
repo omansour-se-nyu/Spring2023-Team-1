@@ -76,6 +76,12 @@ private slots:
 
     void on_goToPatientInfo_button_clicked();
 
+    void on_PatientInfoPage_windowTitleChanged(const QString &title);
+
+    void on_PatientInfoPage_windowIconTextChanged(const QString &iconText);
+
+    void on_patientInfo_back_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
