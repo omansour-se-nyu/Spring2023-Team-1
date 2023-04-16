@@ -1,5 +1,4 @@
 #include "AddPatient.h"
-#include "mainwindow.h"
 
 bool PatientInfo::handleAddPatient(PatientInfo patientInfo, QSqlDatabase db){
     bool detailsAreValid = validatePatientDetails(patientInfo, db);
@@ -7,8 +6,8 @@ bool PatientInfo::handleAddPatient(PatientInfo patientInfo, QSqlDatabase db){
         return false;
     } else{
         QSqlQuery query;
-        query.prepare("INSERT INTO patients (first_name, last_name, dob, sex, height, weight, ssn, street_address, city, zip_code, email, phone, ec_first_name, ec_last_name, ec_phone, ec_email)"
-                      "VALUES (:first_name, :last_name, :dob, :sex, :height, :weight, :ssn, :street_address, :city, :zip_code, :email, :phone, :ec_first_name, :ec_last_name, :ec_phone, :ec_email)");
+        query.prepare("INSERT INTO patients (first_name, last_name, dob, sex, height, weight, ssn, street_address, city, state, zip_code, email, phone, ec_first_name, ec_last_name, ec_phone, ec_email)"
+                      "VALUES (:first_name, :last_name, :dob, :sex, :height, :weight, :ssn, :street_address, :city, :state, :zip_code, :email, :phone, :ec_first_name, :ec_last_name, :ec_phone, :ec_email)");
         query.bindValue(":first_name",  patientInfo.patientFirstName);
         query.bindValue(":last_name",  patientInfo.patientLastName);
         query.bindValue(":dob", patientInfo.patientDOB);
@@ -18,6 +17,7 @@ bool PatientInfo::handleAddPatient(PatientInfo patientInfo, QSqlDatabase db){
         query.bindValue(":ssn", patientInfo.patientSSN);
         query.bindValue(":street_address", patientInfo.patientAddress);
         query.bindValue(":city",  patientInfo.patientCity);
+        query.bindValue(":state", patientInfo.patientState);
         query.bindValue(":zip_code",  patientInfo.patientZip);
         query.bindValue(":email", patientInfo.patientEmail);
         query.bindValue(":phone", patientInfo.patientPhone);
@@ -37,6 +37,43 @@ bool PatientInfo::handleAddPatient(PatientInfo patientInfo, QSqlDatabase db){
     }
 };
 
+bool PatientInfo::handleEditPatient(PatientInfo patientInfo, QSqlDatabase db){
+    bool detailsAreValid = validatePatientDetails(patientInfo, db);
+    if (!detailsAreValid){
+        return false;
+    } else{
+        QSqlQuery query;
+        query.prepare("UPDATE patients SET first_name=:first_name, last_name=:last_name, dob=:dob, sex=:sex, height=:height, weight=:weight, ssn=:ssn, street_address=:street_address, city=:city, state=:state, zip_code=:zip_code, email=:email, phone=:phone, ec_first_name=:ec_first_name, ec_last_name=:ec_last_name, ec_phone=:ec_phone, ec_email=:ec_email WHERE ROWID=:rowid");
+        query.bindValue(":first_name",  patientInfo.patientFirstName);
+        query.bindValue(":last_name",  patientInfo.patientLastName);
+        query.bindValue(":dob", patientInfo.patientDOB);
+        query.bindValue(":sex", patientInfo.patientSex);
+        query.bindValue(":height", patientInfo.patientHeight);
+        query.bindValue(":weight", patientInfo.patientWeight);
+        query.bindValue(":ssn", patientInfo.patientSSN);
+        query.bindValue(":street_address", patientInfo.patientAddress);
+        query.bindValue(":city",  patientInfo.patientCity);
+        query.bindValue(":state", patientInfo.patientState);
+        query.bindValue(":zip_code",  patientInfo.patientZip);
+        query.bindValue(":email", patientInfo.patientEmail);
+        query.bindValue(":phone", patientInfo.patientPhone);
+        query.bindValue(":ec_first_name", patientInfo.emergencyFirstName);
+        query.bindValue(":ec_last_name",  patientInfo.emergencyLastName);
+        query.bindValue(":ec_phone", patientInfo.emergencyPhone);
+        query.bindValue(":ec_email", patientInfo.emergencyEmail);
+        query.bindValue(":rowid", patientInfo.patientID.toInt());
+        if (query.exec()){
+            db.close();
+            return true;
+
+        } else {
+            db.close();
+            return false;
+        }
+        return true;
+    }
+}
+
 bool PatientInfo::validatePatientDetails(PatientInfo patientInfo, QSqlDatabase db){
     if (!hasValidName(patientInfo.patientFirstName) || !hasValidName(patientInfo.patientLastName)){
         return false;
@@ -44,15 +81,15 @@ bool PatientInfo::validatePatientDetails(PatientInfo patientInfo, QSqlDatabase d
     if (!hasValidEmail(patientInfo.patientEmail)){
         return false;
     }
-    if (dbHasEmail(patientInfo.patientEmail, db)){
-        return false;
-    }
+//    if (dbHasEmail(patientInfo.patientEmail, db)){
+//        return false;
+//    }
     if (!hasValidSSN(patientInfo.patientSSN)){
         return false;
     }
-    if (dbHasSSN(patientInfo.patientSSN, db)){
-        return false;
-    }
+//    if (dbHasSSN(patientInfo.patientSSN, db)){
+//        return false;
+//    }
     if (!hasValidName(patientInfo.patientCity)){
         return false;
     }

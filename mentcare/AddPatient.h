@@ -19,17 +19,20 @@ public:             // Access specifier
     QString patientAddress;
     QString patientZip;
     QString patientCity;
+    QString patientState;
     QString patientEmail;
     QString patientPhone;
     QString emergencyFirstName;
     QString emergencyLastName;
     QString emergencyPhone;
     QString emergencyEmail;
+    QString patientID;
+    bool isValid;
+    QString invalidReason;
 
 public slots:
     bool handleAddPatient(PatientInfo patientInfo, QSqlDatabase db);
-//private slots:
-
+    bool handleEditPatient(PatientInfo patientInfo, QSqlDatabase db);
     void populatePatientInfoPage(int patientId, QSqlDatabase db);
     bool validatePatientDetails(PatientInfo patientInfo, QSqlDatabase db);
     bool hasValidEmail(QString email);

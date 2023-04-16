@@ -31,10 +31,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    bool loginAccess(QString email, QString password);
     bool newUser(QString email, QString password);
     bool checkEmailFormat(QString email);
     bool checkEmailInDatabase(QString email);
+    bool editingPatient = false;
+    QString editingPatientID;
 
 private slots:
 
@@ -75,6 +76,20 @@ private slots:
 //    void on_toggleVisible_snn_button_clicked();
 
     void on_goToPatientInfo_button_clicked();
+
+    void on_PatientInfoPage_windowTitleChanged(const QString &title);
+
+    void on_PatientInfoPage_windowIconTextChanged(const QString &iconText);
+
+    void on_patientInfo_back_button_clicked();
+
+    void on_HomePage_ToPatientVisit_Button_clicked();
+
+    void on_PatientVisit_Back_Button_clicked();
+
+    void on_tableView_doubleClicked(const QModelIndex &index);
+
+    void on_patientInfo_editsave_button_clicked();
 
 private:
     Ui::MainWindow *ui;
