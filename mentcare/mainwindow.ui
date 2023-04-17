@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>6</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="PatientsPage">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -203,7 +203,7 @@
             <x>20</x>
             <y>30</y>
             <width>221</width>
-            <height>82</height>
+            <height>86</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_5">

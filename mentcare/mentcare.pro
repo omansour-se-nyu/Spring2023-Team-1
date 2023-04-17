@@ -10,11 +10,13 @@ CONFIG += c++17
 
 SOURCES += \
     AddPatient.cpp \
+    login.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     AddPatient.h \
+    login.h \
     mainwindow.h
 
 FORMS += \

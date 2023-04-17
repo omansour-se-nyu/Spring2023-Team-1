@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "AddPatient.h"
+#include "login.h"
 #include <iostream>
 
 #include <Qstring>
@@ -67,74 +68,6 @@ void MainWindow::on_addPatientSubmitButton_clicked()
     } else {
         QMessageBox::information(this, "Not Inserted", "Could not add patient, please check for errors or duplicate entry.");
     }
-
-//    bool requiredFieldsPopulated = true;
-
-//    if (ui->firstName_lineEdit->text().isEmpty()) {
-//        ui->firstName_lineEdit->setText("This field is required.");
-//        requiredFieldsPopulated = false;
-//    }
-
-//    if (ui->dob_date_edit_4->text().isEmpty()) {
-////        ui->dob_date_edit_4->setText("This field is required.");
-//        requiredFieldsPopulated = false;
-//    }
-
-//    if (ui->ssn_lineEdit->text().isEmpty()) {
-//        ui->ssn_lineEdit->setText("This field is required.");
-//        requiredFieldsPopulated = false;
-//    }
-
-//    if (requiredFieldsPopulated==true)
-//    {
-//        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-//        db.setDatabaseName("../mentcare.sqlite");
-//        if (!db.open()){
-//            QMessageBox::information(this, "Connection", "Unable to Load Database");
-//            db.close();
-//        } else {
-//            QString patientName = ui->firstName_lineEdit->text();
-//            QString patientDOB = ui->dob_date_edit_4->text();
-//            QString patientSex = ui->sex_comboBox->currentText();
-//            QString patientHeight = ui->height_spinBox->text();
-//            QString patientWeight = ui->weight_spinBox->text();
-//            QString patientSSN = ui->ssn_lineEdit->text();
-//            QString patientAddress = ui->address_lineEdit->text();
-//            QString patientEmail = ui->email_lineEdit->text();
-//            QString patientPhone = ui->phone_lineEdit->text();
-//            QString emergencyName = ui->ec_name_lineEdit->text();
-//            QString emergencyPhone = ui->ec_phone_lineEdit->text();
-//            QString emergencyEmail = ui->ec_email_lineEdit->text();
-
-//            QSqlQuery query;
-//            query.prepare("INSERT INTO patients (name, dob, sex, height, weight, ssn, address, email, phone, ec_name, ec_phone, ec_email)"
-//                          "VALUES (:name, :dob, :sex, :height, :weight, :ssn, :address, :email, :phone, :ec_name, :ec_phone, :ec_email)");
-//            query.bindValue(":name",  patientName);
-//            query.bindValue(":dob", patientDOB);
-//            query.bindValue(":sex", patientSex);
-//            query.bindValue(":height", patientHeight);
-//            query.bindValue(":weight", patientWeight);
-//            query.bindValue(":ssn", patientSSN);
-//            query.bindValue(":address", patientAddress);
-//            query.bindValue(":email", patientEmail);
-//            query.bindValue(":phone", patientPhone);
-//            query.bindValue(":ec_name", emergencyName);
-//            query.bindValue(":ec_phone", emergencyPhone);
-//            query.bindValue(":ec_email", emergencyEmail);
-
-//            if (query.exec()){
-//                QMessageBox::information(this, "Inserted", "Successfully Added Patient");
-//                db.close();
-//                ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
-
-//            } else {
-//                QMessageBox::information(this, "Not Inserted", "Could Not Add Patient");
-//                db.close();
-//            }
-//        }
-//    } else {
-//        QMessageBox::information(this, "Form incomplete", "Required fields are missing.");
-//    }
 }
 
 
@@ -253,39 +186,20 @@ void MainWindow::on_HomePage_ToLoginPage_Button_clicked()
 // handle login logic
 void MainWindow::on_LoginPage_LoginButton_clicked()
 {
+    Login login;
     QString email = ui->LoginPage_LineEdit_Login_Email->text();
     QString password = ui->LoginPage_LineEdit_Login_Password->text();
 
-    bool validUser = loginAccess(email, password);
+    login = login.handleLogin(email, password, db);
 
-    if (validUser) {
+    if (login.success) {
+        userEmail = login.userEmail;
         QMessageBox::information(this, "Login", "Successful!");
         ui->stackedWidget->setCurrentWidget(ui->HomePage);
     } else {
         QMessageBox::information(this, "Login", "Login Failed, please try again!");
     }
 }
-
-bool MainWindow::loginAccess(QString email, QString password) {
-    if (!db.open()) {
-        //maybe this should be moved to a UI type function?
-        QMessageBox::information(this, "Connection", "Unable to Load Database");
-        db.close();
-        return false;
-    } else {
-        QSqlQuery query;
-        query.prepare("SELECT * FROM users WHERE users.email=:loginEmail AND users.password=:loginPassword");
-        query.bindValue(":loginEmail", email);
-        query.bindValue(":loginPassword", password);
-        if (query.exec() && query.next()) {
-            userEmail = email;
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-
 
 
 // navigate from login page to main page

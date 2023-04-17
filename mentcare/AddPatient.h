@@ -28,8 +28,6 @@ public:             // Access specifier
 
 public slots:
     bool handleAddPatient(PatientInfo patientInfo, QSqlDatabase db);
-//private slots:
-
     void populatePatientInfoPage(int patientId, QSqlDatabase db);
     bool validatePatientDetails(PatientInfo patientInfo, QSqlDatabase db);
     bool hasValidEmail(QString email);

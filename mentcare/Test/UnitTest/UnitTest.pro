@@ -6,10 +6,12 @@ TEMPLATE = app
 
 SOURCES +=  tst_unittest.cpp \
     ../../AddPatient.cpp \
+    ../../login.cpp \
     ../../mainwindow.cpp
 
 HEADERS += \
     ../../AddPatient.h \
+    ../../login.cpp \
     ../../mainwindow.h
 
 FORMS += \

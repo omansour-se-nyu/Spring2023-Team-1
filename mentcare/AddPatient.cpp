@@ -1,5 +1,4 @@
 #include "AddPatient.h"
-#include "mainwindow.h"
 
 bool PatientInfo::handleAddPatient(PatientInfo patientInfo, QSqlDatabase db){
     bool detailsAreValid = validatePatientDetails(patientInfo, db);

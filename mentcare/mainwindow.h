@@ -31,7 +31,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    bool loginAccess(QString email, QString password);
     bool newUser(QString email, QString password);
     bool checkEmailFormat(QString email);
     bool checkEmailInDatabase(QString email);

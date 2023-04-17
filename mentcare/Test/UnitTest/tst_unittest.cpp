@@ -2,6 +2,7 @@
 #include <QTest>
 #include <QCoreApplication>
 #include "../../AddPatient.h"
+#include "../../login.h"
 #include <iostream>
 
 // add necessary includes here
@@ -19,6 +20,9 @@ private slots:
     void cleanupTestCase();
     void patientInfoTest1();
     void patientInfoTest2();
+    void loginUnitTest1();
+    void loginUnitTest2();
+    void loginUnitTest3();
 };
 
 UnitTest::UnitTest()
@@ -46,7 +50,7 @@ void UnitTest::patientInfoTest1()
     //QString testString("hello world");
     //QVERIFY(testString.toUpper() == "HELLO WORLD");
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../mentcare.sqlite");
+    db.setDatabaseName("../mentcare_test.sqlite");
     PatientInfo pi;
     pi.patientFirstName = "testFAIL";
     pi.patientLastName = "testFAIL";
@@ -71,7 +75,7 @@ void UnitTest::patientInfoTest1()
 
 void UnitTest::patientInfoTest2() {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../mentcare.sqlite");
+    db.setDatabaseName("../mentcare_test.sqlite");
     PatientInfo pi;
     int random = std::rand()*1000+1;
     QString randomizer = QString::number(random);
@@ -107,6 +111,36 @@ void UnitTest::patientInfoTest2() {
 //    std::cout << "e phone: " << pi.hasValidNumber(pi.emergencyPhone) << std::endl;
     db.close();
     QVERIFY(passed==true);
+}
+
+void UnitTest::loginUnitTest1() {
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("../mentcare_test.sqlite");
+    QString email = "admin";
+    QString password = "pass";
+    Login login;
+    login = login.handleLogin(email, password, db);
+    QVERIFY2(login.success == true, "should log user in when valid credentials are provided");
+}
+
+void UnitTest::loginUnitTest2() {
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("../mentcare_test.sqlite");
+    QString email = "thisUserDoesNotExist";
+    QString password = "pass";
+    Login login;
+    login = login.handleLogin(email, password, db);
+    QVERIFY2(login.success == false, "should not log in user when the given email does not exist in database");
+}
+
+void UnitTest::loginUnitTest3() {
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("../mentcare_test.sqlite");
+    QString email = "admin";
+    QString password = "thisIsTheWrongPassword";
+    Login login;
+    login = login.handleLogin(email, password, db);
+    QVERIFY2(login.success == false, "should not log in user when the wrong password is provided");
 }
 
 QTEST_MAIN(UnitTest)
