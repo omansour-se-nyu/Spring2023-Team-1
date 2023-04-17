@@ -558,3 +558,14 @@ void MainWindow::on_patientInfo_back_button_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->HomePage);
 }
+
+void MainWindow::on_HomePage_ToPatientVisit_Button_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->PatientVisitPage);
+}
+
+void MainWindow::on_PatientVisit_Back_Button_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->HomePage);
+}
+

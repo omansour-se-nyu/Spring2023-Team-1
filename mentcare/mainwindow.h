@@ -82,6 +82,10 @@ private slots:
 
     void on_patientInfo_back_button_clicked();
 
+    void on_HomePage_ToPatientVisit_Button_clicked();
+
+    void on_PatientVisit_Back_Button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
