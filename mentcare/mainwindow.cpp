@@ -44,13 +44,14 @@ void MainWindow::on_addPatientSubmitButton_clicked()
     PatientInfo patientInfo;
     patientInfo.patientFirstName = ui->firstName_lineEdit->text();
     patientInfo.patientLastName = ui->lastName_lineEdit->text();
-    patientInfo.patientDOB = ui->dob_date_edit_4->text();
+    patientInfo.patientDOB = ui->dob_date_edit_4->date().toString("MM/dd/yyyy");
     patientInfo.patientSex = ui->sex_comboBox->currentText();
     patientInfo.patientHeight = ui->height_spinBox->text();
     patientInfo.patientWeight = ui->weight_spinBox->text();
     patientInfo.patientSSN = ui->ssn_lineEdit->text();
     patientInfo.patientAddress = ui->address_lineEdit->text();
     patientInfo.patientCity = ui->city_lineEdit->text();
+    patientInfo.patientState = ui->state_lineEdit->text();
     patientInfo.patientZip = ui->zipcode_lineEdit->text();
     patientInfo.patientEmail = ui->email_lineEdit->text();
     patientInfo.patientPhone = ui->phone_lineEdit->text();
@@ -137,8 +138,11 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
                  QString firstName = query.value("first_name").toString();
                  QString dob = query.value("dob").toString();
                  QString lastName = query.value("last_name").toString();
+                 int height = query.value("height").toInt();
+                 int weight = query.value("weight").toInt();
                  QString ssn = query.value("ssn").toString();
                  QString city = query.value("city").toString();
+                 QString state = query.value("state").toString();
                  QString streetAddress = query.value("street_address").toString();
                  QString zipCode = query.value("zip_code").toString();
                  QString email = query.value("email").toString();
@@ -150,22 +154,28 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
 
                  // Use the variables as needed
                  QString patientName = lastName + ", " + firstName;
-                 ui->patientInfo_name_display->setText(patientName);
+                 ui->patientInfo_firstname_display->setText(firstName);
+                 ui->patientInfo_lastname_display->setText(lastName);
                  ui->patientInfo_ssn_display->setText(ssn);
                  ui->patientInfo_city_display->setText(city);
+                 ui->patientInfo_height_display->setValue(height);
+                 ui->patientInfo_weight_display->setValue(weight);
                  ui->patientInfo_email_display->setText(email);
                  ui->patientInfo_phone_display->setText(phone);
 
                 QString ec_name = ecFirstName + ", " + ecLastName;
-                ui -> patientInfo_ec_name_display -> setText(ec_name);
+                ui -> patientInfo_ec_firstname_display -> setText(ecFirstName);
+                ui -> patientInfo_ec_lastname_display -> setText(ecLastName);
                 ui->patientInfo_ec_phone_display->setText(ecPhone);
                 ui->patientInfo_ec_email_display->setText(ecEmail);
 
                 ui->patientInfo_zip_display->setText(zipCode);
                 ui->patientInfo_street_display->setText(streetAddress);
                 ui->patientInfo_city_display->setText(city);
-                ui->patientInfo_dob_display->setText(dob);
+                ui->patientInfo_state_display->setText(state);
 
+                QDate date = QDate::fromString(dob, "MM/dd/yyyy");
+                ui->patientInfo_dob_display->setDate(date);
             }
         }
         else
@@ -317,62 +327,6 @@ void MainWindow::on_RegisterPage_LoginButton_2_clicked()
 }
 
 
-//void MainWindow::on_PatientPage_Filter_Patient_Button_clicked()
-//{
-
-//    //QSqlDatabase
-//    if (!db.open()){
-//        QMessageBox::information(this, "Connection", "Unable to Load Database");
-//        db.close();
-//    } else {
-//        QString name = ui->PatientPage_LineEdit_Name->text();
-//        QString ssn = ui->PatientPage_LineEdit_SSN->text();
-//        QString dob = ui->PatientPage_DateEdit_DOB->text();
-
-//        QSqlQuery query;
-//        query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients WHERE name LIKE :name OR ssn LIKE :ssn OR dob = :dob");
-//        query.bindValue(":name", "%" + name + "%");
-//        query.bindValue(":ssn", "%" + ssn + "%");
-//        query.bindValue(":dob", dob);
-//        if (query.exec()){
-//            QSqlQueryModel * model = new QSqlQueryModel();
-//            model->setQuery(query);
-//            ui->tableView->setModel(model);
-//        } else {
-//             QMessageBox::information(this, "Connection", "Unable to Query Database");
-//        }
-
-//    }
-
-//}
-
-
-//void MainWindow::on_PatientPage_Clear_Filter_Button_clicked()
-//{
-//    //QSqlDatabase
-//    if (!db.open()){
-//        QMessageBox::information(this, "Connection", "Unable to Load Database");
-//        db.close();
-//    } else {
-
-//        ui->PatientPage_LineEdit_Name->clear();
-//        ui->PatientPage_LineEdit_SSN->clear();
-//        ui->PatientPage_DateEdit_DOB->clear();
-
-//        QSqlQuery query;
-//        query.prepare("SELECT id, email, name, dob, phone, ssn FROM patients");
-//        if (query.exec()){
-//            QSqlQueryModel * model = new QSqlQueryModel();
-//            model->setQuery(query);
-//            ui->tableView->setModel(model);
-//        } else {
-//             QMessageBox::information(this, "Connection", "Unable to Query Database");
-//        }
-
-//    }
-
-//}
-
 
 void MainWindow::on_PatientPage_LineEdit_Name_textEdited(const QString &arg1)
 {
@@ -449,6 +403,8 @@ void MainWindow::on_goToPatientInfo_button_clicked()
 
     QString patientId = ui->PatientsPage_LineEdit_Lookup_id->text();
 
+
+
     QString title = "Patient id, " + patientId;
 
     setWindowTitle(title);
@@ -470,7 +426,30 @@ void MainWindow::on_PatientInfoPage_windowTitleChanged(QString const& title) {
 
 void MainWindow::on_patientInfo_back_button_clicked()
 {
-    ui->stackedWidget->setCurrentWidget(ui->HomePage);
+    if (!editingPatient){
+        ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
+    } else {
+        ui->patientInfo_back_button->setText("Back");
+        ui->patientInfo_editsave_button->setText("Edit Patient Information");
+        ui->patientInfo_firstname_display->setReadOnly(true);
+        ui->patientInfo_lastname_display->setReadOnly(true);
+        ui->patientInfo_firstname_display->setReadOnly(true);
+        ui->patientInfo_ssn_display->setReadOnly(true);
+        ui->patientInfo_dob_display->setReadOnly(true);
+        ui->patientInfo_height_display->setReadOnly(true);
+        ui->patientInfo_weight_display->setReadOnly(true);
+        ui->patientInfo_street_display->setReadOnly(true);
+        ui->patientInfo_city_display->setReadOnly(true);
+        ui->patientInfo_state_display->setReadOnly(true);
+        ui->patientInfo_zip_display->setReadOnly(true);
+        ui->patientInfo_email_display->setReadOnly(true);
+        ui->patientInfo_phone_display->setReadOnly(true);
+        ui->patientInfo_ec_firstname_display->setReadOnly(true);
+        ui->patientInfo_ec_lastname_display->setReadOnly(true);
+        ui->patientInfo_ec_email_display->setReadOnly(true);
+        ui->patientInfo_ec_phone_display->setReadOnly(true);
+        editingPatient = false;
+    }
 }
 
 void MainWindow::on_HomePage_ToPatientVisit_Button_clicked()
@@ -481,5 +460,95 @@ void MainWindow::on_HomePage_ToPatientVisit_Button_clicked()
 void MainWindow::on_PatientVisit_Back_Button_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->HomePage);
+}
+
+
+void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
+{
+    editingPatientID = index.sibling(index.row(),0).data().toString();
+
+
+
+    QString title = "Patient id, " + editingPatientID;
+
+    setWindowTitle(title);
+    ui->stackedWidget->setCurrentWidget(ui->PatientInfoPage);
+}
+
+
+void MainWindow::on_patientInfo_editsave_button_clicked()
+{
+    if (!editingPatient){
+        editingPatient = true;
+        ui->patientInfo_editsave_button->setText("Save Changes");
+        ui->patientInfo_back_button->setText("Cancel");
+        ui->patientInfo_firstname_display->setReadOnly(false);
+        ui->patientInfo_lastname_display->setReadOnly(false);
+        ui->patientInfo_firstname_display->setReadOnly(false);
+        ui->patientInfo_ssn_display->setReadOnly(false);
+        ui->patientInfo_dob_display->setReadOnly(false);
+        ui->patientInfo_sex_display->setEnabled(true);
+        ui->patientInfo_height_display->setReadOnly(false);
+        ui->patientInfo_weight_display->setReadOnly(false);
+        ui->patientInfo_street_display->setReadOnly(false);
+        ui->patientInfo_city_display->setReadOnly(false);
+        ui->patientInfo_state_display->setReadOnly(false);
+        ui->patientInfo_zip_display->setReadOnly(false);
+        ui->patientInfo_email_display->setReadOnly(false);
+        ui->patientInfo_phone_display->setReadOnly(false);
+        ui->patientInfo_ec_firstname_display->setReadOnly(false);
+        ui->patientInfo_ec_lastname_display->setReadOnly(false);
+        ui->patientInfo_ec_email_display->setReadOnly(false);
+        ui->patientInfo_ec_phone_display->setReadOnly(false);
+
+
+    } else {
+        PatientInfo patientEdits;
+        patientEdits.patientFirstName = ui->patientInfo_firstname_display->text();
+        patientEdits.patientLastName = ui->patientInfo_lastname_display->text();
+        patientEdits.patientDOB = ui->patientInfo_dob_display->date().toString("MM/dd/yyyy");
+        patientEdits.patientSex = ui->patientInfo_sex_display->currentText();
+        patientEdits.patientHeight = ui->patientInfo_height_display->text();
+        patientEdits.patientWeight = ui->patientInfo_weight_display->text();
+        patientEdits.patientSSN = ui->patientInfo_ssn_display->text();
+        patientEdits.patientAddress = ui->patientInfo_street_display->text();
+        patientEdits.patientCity = ui->patientInfo_city_display->text();
+        patientEdits.patientState = ui->patientInfo_state_display->text();
+        patientEdits.patientZip = ui->patientInfo_zip_display->text();
+        patientEdits.patientEmail = ui->patientInfo_email_display->text();
+        patientEdits.patientPhone = ui->patientInfo_phone_display->text();
+        patientEdits.emergencyPhone = ui->patientInfo_ec_phone_display->text();
+        patientEdits.emergencyEmail = ui->patientInfo_ec_email_display->text();
+        patientEdits.emergencyFirstName = ui->patientInfo_ec_firstname_display->text();
+        patientEdits.emergencyLastName = ui->patientInfo_lastname_display->text();
+        patientEdits.patientID = editingPatientID;
+
+        bool editedPatient = patientEdits.handleEditPatient(patientEdits, db);
+        if (editedPatient){
+            ui->patientInfo_editsave_button->setText("Edit Patient Information");
+            ui->patientInfo_back_button->setText("Back");
+            ui->patientInfo_firstname_display->setReadOnly(true);
+            ui->patientInfo_lastname_display->setReadOnly(true);
+            ui->patientInfo_firstname_display->setReadOnly(true);
+            ui->patientInfo_ssn_display->setReadOnly(true);
+            ui->patientInfo_dob_display->setReadOnly(true);
+            ui->patientInfo_height_display->setReadOnly(true);
+            ui->patientInfo_weight_display->setReadOnly(true);
+            ui->patientInfo_street_display->setReadOnly(true);
+            ui->patientInfo_city_display->setReadOnly(true);
+            ui->patientInfo_state_display->setReadOnly(true);
+            ui->patientInfo_zip_display->setReadOnly(true);
+            ui->patientInfo_email_display->setReadOnly(true);
+            ui->patientInfo_phone_display->setReadOnly(true);
+            ui->patientInfo_ec_firstname_display->setReadOnly(true);
+            ui->patientInfo_ec_lastname_display->setReadOnly(true);
+            ui->patientInfo_ec_email_display->setReadOnly(true);
+            ui->patientInfo_ec_phone_display->setReadOnly(true);
+            editingPatient = false;
+            QMessageBox::information(this, "Edit Patient", "Updated patient details!");
+        } else {
+            QMessageBox::information(this, "Edit Patient", "Unable to confirm changes, please check for errors");
+        }
+    }
 }
 

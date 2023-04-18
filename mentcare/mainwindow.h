@@ -34,6 +34,8 @@ public:
     bool newUser(QString email, QString password);
     bool checkEmailFormat(QString email);
     bool checkEmailInDatabase(QString email);
+    bool editingPatient = false;
+    QString editingPatientID;
 
 private slots:
 
@@ -84,6 +86,10 @@ private slots:
     void on_HomePage_ToPatientVisit_Button_clicked();
 
     void on_PatientVisit_Back_Button_clicked();
+
+    void on_tableView_doubleClicked(const QModelIndex &index);
+
+    void on_patientInfo_editsave_button_clicked();
 
 private:
     Ui::MainWindow *ui;
