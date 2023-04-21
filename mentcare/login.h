@@ -10,6 +10,7 @@ class Login
 {
 public:
     QString userEmail;
+    QString userRole;
     bool success;
 
 public slots:

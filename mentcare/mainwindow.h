@@ -31,9 +31,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    bool newUser(QString email, QString password);
+    bool newUser(QString email, QString password, QString role, int roleLevel);
     bool checkEmailFormat(QString email);
     bool checkEmailInDatabase(QString email);
+    void EnableHomePageAccess(QString role);
+
     bool editingPatient = false;
     QString editingPatientID;
 

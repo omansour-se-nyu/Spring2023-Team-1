@@ -204,8 +204,12 @@ void MainWindow::on_LoginPage_LoginButton_clicked()
 
     if (login.success) {
         userEmail = login.userEmail;
+        userRole = login.userRole;
         QMessageBox::information(this, "Login", "Successful!");
         ui->stackedWidget->setCurrentWidget(ui->HomePage);
+        ui->HomePage_UserEmailLabel->setText(userEmail);
+        ui->HomePage_UserRoleLabel->setText(userRole);
+        EnableHomePageAccess(userRole);
     } else {
         QMessageBox::information(this, "Login", "Login Failed, please try again!");
     }
@@ -249,6 +253,9 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
     QString email = ui->RegisterPage_LineEdit_Login_Email->text();
     QString pass1 = ui->RegisterPage_LineEdit_Login_Password->text();
     QString pass2 = ui->RegisterPage_LineEdit_Login_Password_2->text();
+    QString role = ui->RegisterPage_ButtonGroup_Role->checkedButton()->text();
+    int roleLevel = ui->RegisterPage_ButtonGroup_Role->checkedId()*(-1)-1;
+
 
     if (email == "") {
         QMessageBox::information(this, "Registration", "Email cannot be empty");
@@ -264,7 +271,7 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
         QMessageBox::information(this, "Registration", "Passwords do not match");
         std::cout << pass1.toStdString() << std::endl << pass2.toStdString();
     } else {
-        bool userAdded = newUser(email, pass1);
+        bool userAdded = newUser(email, pass1, role, roleLevel);
         if (userAdded) {
             QMessageBox::information(this, "Registration", "New user " + email + " added");
             ui->RegisterPage_LineEdit_Login_Email->clear();
@@ -275,6 +282,29 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
         }
     }
 
+}
+
+void MainWindow::EnableHomePageAccess(QString role)
+{
+    if (role == "System Owner" || role == "Administrator") {
+        ui->patientLookupButton->setEnabled(true);
+        ui->HomePage_ToPatientVisit_Button->setEnabled(true);
+        ui->HomePage_toCalendar_Button->setEnabled(true);
+        ui->HomePage_ToLoginPage_Button->setEnabled(true);
+        ui->HomePage_ToRegisterPage_Button->setEnabled(true);
+    } else if (role == "Provider") {
+        ui->patientLookupButton->setEnabled(true);
+        ui->HomePage_ToPatientVisit_Button->setEnabled(true);
+        ui->HomePage_toCalendar_Button->setEnabled(true);
+        ui->HomePage_ToLoginPage_Button->setEnabled(true);
+        ui->HomePage_ToRegisterPage_Button->setEnabled(false);
+    } else {
+        ui->patientLookupButton->setEnabled(false);
+        ui->HomePage_ToPatientVisit_Button->setEnabled(false);
+        ui->HomePage_toCalendar_Button->setEnabled(true);
+        ui->HomePage_ToLoginPage_Button->setEnabled(true);
+        ui->HomePage_ToRegisterPage_Button->setEnabled(false);
+    }
 }
 
 bool MainWindow::checkEmailFormat(QString email)
@@ -297,7 +327,7 @@ bool MainWindow::checkEmailFormat(QString email)
     }
 }
 
-bool MainWindow::newUser(QString email, QString password) {
+bool MainWindow::newUser(QString email, QString password, QString role, int roleLevel) {
     if (!db.open()) {
         //maybe this should be moved to a UI type function?
         QMessageBox::information(this, "Connection", "Unable to Load Database");
@@ -305,10 +335,12 @@ bool MainWindow::newUser(QString email, QString password) {
         return false;
     } else {
         QSqlQuery query;
-        query.prepare("INSERT INTO users (email, password)"
-                      "VALUES (:email, :password)");
+        query.prepare("INSERT INTO users (email, password, role, role_level)"
+                      "VALUES (:email, :password, :role, :role_level)");
         query.bindValue(":email", email);
         query.bindValue(":password", password);
+        query.bindValue(":role", role);
+        query.bindValue(":role_level", roleLevel);
         if (query.exec()) {// && query.next()) {
             //userEmail = email;
             std::cout << "success: " << query.lastQuery().toStdString() << std::endl;
