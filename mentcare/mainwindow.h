@@ -31,9 +31,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    bool newUser(QString email, QString password);
+    bool newUser(QString email, QString password, QString role, int roleLevel);
     bool checkEmailFormat(QString email);
     bool checkEmailInDatabase(QString email);
+    void enableHomePageAccess(QString role);
+    void patientInfoReadOnlyMode();
+
+    bool queryVisitsByPatient(int patient_id);
+    bool queryChroniclesByPatient(int patient_id);
+
     bool editingPatient = false;
     QString editingPatientID;
 
@@ -90,6 +96,24 @@ private slots:
     void on_tableView_doubleClicked(const QModelIndex &index);
 
     void on_patientInfo_editsave_button_clicked();
+
+    void on_enableAddVisit_button_clicked();
+
+    void on_cancelAddVisit_button_clicked();
+
+    void on_addVisit_button_clicked();
+
+    void on_backToPatientInfoPage_button_clicked();
+
+    void on_goToChroniclesPage_button_clicked();
+
+    void on_enableAddChronicle_button_clicked();
+
+    void on_cancelAddChronicle_button_clicked();
+
+    void on_addChronicle_button_clicked();
+
+    void on_HomePage_toCalendar_Button_clicked();
 
 private:
     Ui::MainWindow *ui;
