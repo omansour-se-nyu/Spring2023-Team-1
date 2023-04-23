@@ -283,12 +283,12 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
     } else if (pass1!=pass2) {
         QMessageBox::information(this, "Registration", "Passwords do not match");
         std::cout << pass1.toStdString() << std::endl << pass2.toStdString() << std::endl;
-    } else if (role != "Administrator" || role != "Provider" || role != "Patient") {
+    } else if (role != "Administrator" && role != "Provider" && role != "Patient") {
         QMessageBox::information(this, "Registration", "Please select a user role");
-        std::cout << role.toStdString() << std::endl;
+        std::cout << "Role: " << role.toStdString() << std::endl;
     } else if (roleLevel < 1 || roleLevel > 3) {
         QMessageBox::information(this, "Registration", "Please select a user role");
-        std::cout << roleLevel << std::endl;
+        std::cout << "Role Level: " << roleLevel << std::endl;
     } else {
         bool userAdded = newUser(email, pass1, role, roleLevel);
         if (userAdded) {
@@ -296,6 +296,7 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
             ui->RegisterPage_LineEdit_Login_Email->clear();
             ui->RegisterPage_LineEdit_Login_Password->clear();
             ui->RegisterPage_LineEdit_Login_Password_2->clear();
+            ui->RegisterPage_Users_Table->viewport()->update();
         } else {
             QMessageBox::information(this, "Registration", "Unable to add new user");
         }
@@ -394,6 +395,10 @@ bool MainWindow::newUser(QString email, QString password, QString role, int role
 
 void MainWindow::on_RegisterPage_LoginButton_2_clicked()
 {
+    ui->RegisterPage_LineEdit_Login_Email->clear();
+    ui->RegisterPage_LineEdit_Login_Password->clear();
+    ui->RegisterPage_LineEdit_Login_Password_2->clear();
+    ui->RegisterPage_RadioButton_Patient->setChecked(true);
     ui->stackedWidget->setCurrentWidget(ui->HomePage);
 }
 
