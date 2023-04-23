@@ -249,6 +249,13 @@ bool MainWindow::checkEmailInDatabase(QString email)
 void MainWindow::on_HomePage_ToRegisterPage_Button_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->RegisterPage);
+    QSqlTableModel *model = new QSqlTableModel;
+    model->setTable("users");
+    if (userRole == "Administrator")
+        model->setFilter("users.role_level>1");
+    model->setEditStrategy(QSqlTableModel::OnFieldChange);
+    model->select();
+    ui->RegisterPage_Users_Table->setModel(model);
 }
 
 
@@ -260,7 +267,7 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
     QString role = ui->RegisterPage_ButtonGroup_Role->checkedButton()->text();
     int roleLevel = ui->RegisterPage_ButtonGroup_Role->checkedId()*(-1)-1;
 
-    std::cout << "Role: " << role.toStdString() << std::endl;
+    //std::cout << "Role: " << role.toStdString() << std::endl;
 
 
     if (email == "") {
