@@ -34,7 +34,8 @@ public:
     bool newUser(QString email, QString password, QString role, int roleLevel);
     bool checkEmailFormat(QString email);
     bool checkEmailInDatabase(QString email);
-    void EnableHomePageAccess(QString role);
+    void enableHomePageAccess(QString role);
+    void patientInfoReadOnlyMode();
 
     bool editingPatient = false;
     QString editingPatientID;

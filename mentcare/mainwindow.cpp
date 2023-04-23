@@ -4,7 +4,7 @@
 #include "login.h"
 #include <iostream>
 
-#include <Qstring>
+#include <QString>
 #include <string>
 
 
@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     db = QSqlDatabase::addDatabase("QSQLITE");
+    //db.setPassword("");
     db.setDatabaseName("../mentcare.sqlite");
     userEmail="";
     userRole="";
@@ -206,10 +207,13 @@ void MainWindow::on_LoginPage_LoginButton_clicked()
         userEmail = login.userEmail;
         userRole = login.userRole;
         QMessageBox::information(this, "Login", "Successful!");
+        enableHomePageAccess(userRole);
+        QPixmap logoImage(":/new/prefix1/Logo.png");
+        logoImage.scaled(QSize(400,140));
+        ui->HomePage_Logo_Label->setPixmap(logoImage);
         ui->stackedWidget->setCurrentWidget(ui->HomePage);
         ui->HomePage_UserEmailLabel->setText(userEmail);
         ui->HomePage_UserRoleLabel->setText(userRole);
-        EnableHomePageAccess(userRole);
     } else {
         QMessageBox::information(this, "Login", "Login Failed, please try again!");
     }
@@ -256,6 +260,8 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
     QString role = ui->RegisterPage_ButtonGroup_Role->checkedButton()->text();
     int roleLevel = ui->RegisterPage_ButtonGroup_Role->checkedId()*(-1)-1;
 
+    std::cout << "Role: " << role.toStdString() << std::endl;
+
 
     if (email == "") {
         QMessageBox::information(this, "Registration", "Email cannot be empty");
@@ -269,7 +275,13 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
         QMessageBox::information(this, "Registration", "Password length need to be at least 6");
     } else if (pass1!=pass2) {
         QMessageBox::information(this, "Registration", "Passwords do not match");
-        std::cout << pass1.toStdString() << std::endl << pass2.toStdString();
+        std::cout << pass1.toStdString() << std::endl << pass2.toStdString() << std::endl;
+    } else if (role != "Administrator" || role != "Provider" || role != "Patient") {
+        QMessageBox::information(this, "Registration", "Please select a user role");
+        std::cout << role.toStdString() << std::endl;
+    } else if (roleLevel < 1 || roleLevel > 3) {
+        QMessageBox::information(this, "Registration", "Please select a user role");
+        std::cout << roleLevel << std::endl;
     } else {
         bool userAdded = newUser(email, pass1, role, roleLevel);
         if (userAdded) {
@@ -284,7 +296,7 @@ void MainWindow::on_RegisterPage_LoginButton_clicked()
 
 }
 
-void MainWindow::EnableHomePageAccess(QString role)
+void MainWindow::enableHomePageAccess(QString role)
 {
     if (role == "System Owner" || role == "Administrator") {
         ui->patientLookupButton->setEnabled(true);
@@ -292,18 +304,38 @@ void MainWindow::EnableHomePageAccess(QString role)
         ui->HomePage_toCalendar_Button->setEnabled(true);
         ui->HomePage_ToLoginPage_Button->setEnabled(true);
         ui->HomePage_ToRegisterPage_Button->setEnabled(true);
+
+        ui->patientLookupButton->setVisible(true);
+        ui->HomePage_ToPatientVisit_Button->setVisible(true);
+        ui->HomePage_toCalendar_Button->setVisible(true);
+        ui->HomePage_ToLoginPage_Button->setVisible(true);
+        ui->HomePage_ToRegisterPage_Button->setVisible(true);
     } else if (role == "Provider") {
         ui->patientLookupButton->setEnabled(true);
         ui->HomePage_ToPatientVisit_Button->setEnabled(true);
         ui->HomePage_toCalendar_Button->setEnabled(true);
         ui->HomePage_ToLoginPage_Button->setEnabled(true);
         ui->HomePage_ToRegisterPage_Button->setEnabled(false);
+
+
+        ui->patientLookupButton->setVisible(true);
+        ui->HomePage_ToPatientVisit_Button->setVisible(true);
+        ui->HomePage_toCalendar_Button->setVisible(true);
+        ui->HomePage_ToLoginPage_Button->setVisible(true);
+        ui->HomePage_ToRegisterPage_Button->setVisible(false);
     } else {
         ui->patientLookupButton->setEnabled(false);
         ui->HomePage_ToPatientVisit_Button->setEnabled(false);
         ui->HomePage_toCalendar_Button->setEnabled(true);
         ui->HomePage_ToLoginPage_Button->setEnabled(true);
         ui->HomePage_ToRegisterPage_Button->setEnabled(false);
+
+
+        ui->patientLookupButton->setVisible(false);
+        ui->HomePage_ToPatientVisit_Button->setVisible(false);
+        ui->HomePage_toCalendar_Button->setVisible(true);
+        ui->HomePage_ToLoginPage_Button->setVisible(true);
+        ui->HomePage_ToRegisterPage_Button->setVisible(false);
     }
 }
 
@@ -457,6 +489,11 @@ void MainWindow::on_PatientInfoPage_windowTitleChanged(QString const& title) {
 
 
 void MainWindow::on_patientInfo_back_button_clicked()
+{
+    patientInfoReadOnlyMode();
+}
+
+void MainWindow::patientInfoReadOnlyMode()
 {
     if (!editingPatient){
         ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
