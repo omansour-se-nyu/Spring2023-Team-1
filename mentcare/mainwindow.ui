@@ -18,7 +18,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="PatientsPage">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -62,7 +62,7 @@
         <item row="3" column="0" colspan="3">
          <widget class="QPushButton" name="goToPatientInfo_button">
           <property name="text">
-           <string>Viw Patient Information By User Id</string>
+           <string>View Patient Information By User Id</string>
           </property>
          </widget>
         </item>
@@ -1454,7 +1454,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>17</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMentcare">
