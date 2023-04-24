@@ -183,6 +183,23 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
         {
             QMessageBox::information(this, "Connection", "Unable to Query Database");
         }
+
+        QSqlQuery query_visits;
+        QString query_visits_String = "SELECT CASE WHEN datetime('now') < date_occurs THEN 'upcoming' ELSE 'past' END AS [Status], STRFTIME('%m/%d/%Y', date_occurs) AS [Date], STRFTIME('%H:%M', date_occurs) AS [Time], providers.first_name || ' ' || providers.last_name AS [Attending Provider] FROM patient_visits JOIN providers ON patient_visits.provider_id = providers.id WHERE patient_id=:patient_id ORDER BY date_occurs DESC";
+        query_visits.prepare(query_visits_String);
+        query_visits.bindValue(":patient_id", id);
+
+        if(query_visits.exec())
+        {
+            QSqlQueryModel * model = new QSqlQueryModel();
+            model->setQuery(query_visits);
+            ui->PatientInfo_visits_tableView->setModel(model);
+
+        }
+        else
+        {
+            QMessageBox::information(this, "Connection", "Unable to Query Database");
+        }
     }
 }
 

@@ -18,7 +18,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="PatientsPage">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -451,6 +451,27 @@
             <property name="text">
              <string>Edit Patient Information</string>
             </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_14">
+          <item>
+           <widget class="QGroupBox" name="visits_groupBox">
+            <property name="title">
+             <string>visits</string>
+            </property>
+            <widget class="QTableView" name="PatientInfo_visits_tableView">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>681</width>
+               <height>111</height>
+              </rect>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -1321,6 +1342,9 @@
       </widget>
      </widget>
     </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_12"/>
+    </item>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -1330,7 +1354,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMentcare">
