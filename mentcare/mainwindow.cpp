@@ -30,12 +30,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_addPatient_pushButton_clicked()
 {
+    setWindowTitle("Add a New Patient");
     ui->stackedWidget->setCurrentWidget(ui->AddPatientPage);
 }
 
 
 void MainWindow::on_addPatientCancelButton_clicked()
 {
+    setWindowTitle("Patient Lookup");
     ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
 }
 
@@ -65,6 +67,7 @@ void MainWindow::on_addPatientSubmitButton_clicked()
 
     if (addedPatient){
         QMessageBox::information(this, "Inserted", "Successfully added patient!");
+        setWindowTitle("Patient Lookup");
         ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
 
     } else {
@@ -75,12 +78,14 @@ void MainWindow::on_addPatientSubmitButton_clicked()
 
 void MainWindow::on_patientLookupButton_clicked()
 {
+    setWindowTitle("Patient Lookup");
     ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
 }
 
 
 void MainWindow::on_patientsPage_exit_clicked()
 {
+    setWindowTitle("Mentcare Home");
     ui->stackedWidget->setCurrentWidget(ui->HomePage);
 }
 
@@ -184,22 +189,25 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
             QMessageBox::information(this, "Connection", "Unable to Query Database");
         }
 
-        QSqlQuery query_visits;
-        QString query_visits_String = "SELECT CASE WHEN datetime('now') < datetime_occurs THEN 'upcoming' ELSE 'past' END AS [Status], STRFTIME('%m/%d/%Y', datetime_occurs) AS [Date], STRFTIME('%H:%M', datetime_occurs) AS [Time], providers.first_name || ' ' || providers.last_name AS [Attending Provider] FROM patient_visits JOIN providers ON patient_visits.provider_id = providers.id WHERE patient_id=:patient_id ORDER BY datetime_occurs DESC";
-        query_visits.prepare(query_visits_String);
-        query_visits.bindValue(":patient_id", id);
+        queryVisitsByPatient(id);
 
-        if(query_visits.exec())
-        {
-            QSqlQueryModel * model = new QSqlQueryModel();
-            model->setQuery(query_visits);
-            ui->PatientInfo_visits_tableView->setModel(model);
+          //moved to separate method
+//        QSqlQuery query_visits;
+//        QString query_visits_String = "SELECT CASE WHEN datetime('now') < datetime_occurs THEN 'upcoming' ELSE 'past' END AS [Status], STRFTIME('%m/%d/%Y', datetime_occurs) AS [Date], STRFTIME('%H:%M', datetime_occurs) AS [Time], providers.first_name || ' ' || providers.last_name AS [Attending Provider] FROM patient_visits JOIN providers ON patient_visits.provider_id = providers.id WHERE patient_id=:patient_id ORDER BY datetime_occurs DESC";
+//        query_visits.prepare(query_visits_String);
+//        query_visits.bindValue(":patient_id", id);
 
-        }
-        else
-        {
-            QMessageBox::information(this, "Connection", "Unable to Query Database");
-        }
+//        if(query_visits.exec())
+//        {
+//            QSqlQueryModel * model = new QSqlQueryModel();
+//            model->setQuery(query_visits);
+//            ui->PatientInfo_visits_tableView->setModel(model);
+
+//        }
+//        else
+//        {
+//            QMessageBox::information(this, "Connection", "Unable to Query Database");
+//        }
 
         ui->addVisit_groupBox->setVisible(false);
         ui->enableAddVisit_button->setEnabled(true);
@@ -209,6 +217,7 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
 // navigate from main page to loing page
 void MainWindow::on_HomePage_ToLoginPage_Button_clicked()
 {
+    setWindowTitle("Mentcare Login");
     ui->stackedWidget->setCurrentWidget(ui->LoginPage);
     ui->LoginPage_LineEdit_Login_Password->clear();
     ui->LoginPage_LineEdit_Login_Email->clear();
@@ -231,6 +240,7 @@ void MainWindow::on_LoginPage_LoginButton_clicked()
         QPixmap logoImage(":/new/prefix1/Logo.png");
         logoImage.scaled(QSize(400,140));
         ui->HomePage_Logo_Label->setPixmap(logoImage);
+        setWindowTitle("Mentcare Home");
         ui->stackedWidget->setCurrentWidget(ui->HomePage);
         ui->HomePage_UserEmailLabel->setText(userEmail);
         ui->HomePage_UserRoleLabel->setText(userRole);
@@ -268,6 +278,7 @@ bool MainWindow::checkEmailInDatabase(QString email)
 
 void MainWindow::on_HomePage_ToRegisterPage_Button_clicked()
 {
+    setWindowTitle("User Management");
     ui->stackedWidget->setCurrentWidget(ui->RegisterPage);
     QSqlTableModel *model = new QSqlTableModel;
     model->setTable("users");
@@ -414,6 +425,7 @@ bool MainWindow::newUser(QString email, QString password, QString role, int role
 
 void MainWindow::on_RegisterPage_LoginButton_2_clicked()
 {
+    setWindowTitle("Mentcare Home");
     ui->stackedWidget->setCurrentWidget(ui->HomePage);
 }
 
@@ -523,6 +535,7 @@ void MainWindow::on_patientInfo_back_button_clicked()
 void MainWindow::patientInfoReadOnlyMode()
 {
     if (!editingPatient){
+        setWindowTitle("Patient Lookup");
         ui->stackedWidget->setCurrentWidget(ui->PatientsPage);
     } else {
         ui->patientInfo_back_button->setText("Back");
@@ -693,7 +706,7 @@ void MainWindow::on_addVisit_button_clicked()
 {
     int selectedIndex = ui->AddVisit_providers_comboBox->currentIndex();
 
-    QMessageBox::information(this, "comboBox selection", "You selected index" + QString::number(selectedIndex));
+//    QMessageBox::information(this, "comboBox selection", "You selected index" + QString::number(selectedIndex));
 
     if(selectedIndex==-1) {
         QMessageBox::information(this, "Add Visit", "select a provider to add a visit");
@@ -715,18 +728,48 @@ void MainWindow::on_addVisit_button_clicked()
 
         QSqlQuery query_insert_visit;
         query_insert_visit.prepare("INSERT INTO patient_visits (patient_id, provider_id, datetime_occurs)"
-                                   "VALUES (:patient_id, :provider_id, :date || ' ' || :time)");
+//                                   "VALUES (:patient_id, :provider_id, :date || ' ' || :time)");
+                                   "VALUES (:patient_id, :provider_id, datetime( :date || ' ' || :time, 'utc') )");
         query_insert_visit.bindValue(":patient_id", current_patient_id);
         query_insert_visit.bindValue(":provider_id", selected_provider_id);
         query_insert_visit.bindValue(":date", selectedDate);
         query_insert_visit.bindValue(":time", selectedTime);
 
         if (query_insert_visit.exec()){
+            QMessageBox::information(this, "Success", "Visit added!");
+            queryVisitsByPatient(current_patient_id);
+            ui->addVisit_groupBox->setVisible(false);
+            ui->enableAddVisit_button->setEnabled(true);
+            ui->enableAddVisit_button->setFocus();
 
         } else {
-             QMessageBox::information(this, "Connection", "Unable to Query Database");
+            QMessageBox::information(this, "Connection", "Unable to Query Database");
         }
 
     }
+
 }
 
+bool MainWindow::queryVisitsByPatient(int patient_id) {
+
+    QSqlQuery query_visits;
+    QString query_visits_String = "SELECT CASE WHEN datetime('now') < datetime_occurs THEN 'upcoming' ELSE 'past' END AS [Status], STRFTIME('%m/%d/%Y', datetime(datetime_occurs,'localtime') ) AS [Date], STRFTIME('%H:%M', datetime(datetime_occurs, 'localtime') ) AS [Time], providers.first_name || ' ' || providers.last_name AS [Attending Provider] FROM patient_visits JOIN providers ON patient_visits.provider_id = providers.id WHERE patient_id=:patient_id ORDER BY datetime_occurs DESC";
+    query_visits.prepare(query_visits_String);
+    query_visits.bindValue(":patient_id", patient_id);
+
+    if(query_visits.exec())
+    {
+        QSqlQueryModel * model = new QSqlQueryModel();
+        model->setQuery(query_visits);
+        ui->PatientInfo_visits_tableView->setModel(model);
+        ui->PatientInfo_visits_tableView->resizeColumnsToContents();
+        ui->PatientInfo_visits_tableView->resizeRowsToContents();
+        return true;
+    }
+    else
+    {
+        QMessageBox::information(this, "Connection", "Unable to Query Database");
+        return false;
+    }
+
+}

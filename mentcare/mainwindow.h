@@ -37,6 +37,8 @@ public:
     void enableHomePageAccess(QString role);
     void patientInfoReadOnlyMode();
 
+    bool queryVisitsByPatient(int patient_id);
+
     bool editingPatient = false;
     QString editingPatientID;
 
