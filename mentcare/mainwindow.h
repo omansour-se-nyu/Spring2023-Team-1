@@ -98,6 +98,8 @@ private slots:
 
     void on_cancelAddVisit_button_clicked();
 
+    void on_addVisit_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 

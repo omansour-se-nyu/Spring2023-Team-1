@@ -688,3 +688,45 @@ void MainWindow::on_cancelAddVisit_button_clicked()
 
 }
 
+
+void MainWindow::on_addVisit_button_clicked()
+{
+    int selectedIndex = ui->AddVisit_providers_comboBox->currentIndex();
+
+    QMessageBox::information(this, "comboBox selection", "You selected index" + QString::number(selectedIndex));
+
+    if(selectedIndex==-1) {
+        QMessageBox::information(this, "Add Visit", "select a provider to add a visit");
+    }
+    else {
+        // consider creating a class for Visit; create an object here
+
+        QModelIndex model_index = ui->AddVisit_providers_comboBox->model()->index(selectedIndex, 0);
+        int selected_provider_id = ui->AddVisit_providers_comboBox->model()->data(model_index).toInt();
+
+        //re-used code to parse patient_id from window title
+        QString title = windowTitle();
+        QStringList parts = title.split(","); // Split the title string using comma delimiter
+        QString patientIdString = parts.at(1).trimmed(); // Extract the second part and remove whitespace
+        int current_patient_id = patientIdString.toInt(); // Convert the patient id string to an integer
+
+        QString selectedDate = ui->PatientInfoPage_AddVisit_dateEdit->date().toString("yyyy-MM-dd");
+        QString selectedTime = ui->PatientInfoPage_AddVisit_timeEdit->time().toString("HH:mm:ss");
+
+        QSqlQuery query_insert_visit;
+        query_insert_visit.prepare("INSERT INTO patient_visits (patient_id, provider_id, datetime_occurs)"
+                                   "VALUES (:patient_id, :provider_id, :date || ' ' || :time)");
+        query_insert_visit.bindValue(":patient_id", current_patient_id);
+        query_insert_visit.bindValue(":provider_id", selected_provider_id);
+        query_insert_visit.bindValue(":date", selectedDate);
+        query_insert_visit.bindValue(":time", selectedTime);
+
+        if (query_insert_visit.exec()){
+
+        } else {
+             QMessageBox::information(this, "Connection", "Unable to Query Database");
+        }
+
+    }
+}
+
