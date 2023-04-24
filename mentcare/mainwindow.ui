@@ -18,7 +18,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="PatientsPage">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -467,9 +467,103 @@
               <rect>
                <x>10</x>
                <y>20</y>
-               <width>681</width>
+               <width>421</width>
                <height>111</height>
               </rect>
+             </property>
+            </widget>
+            <widget class="QGroupBox" name="addVisit_groupBox">
+             <property name="geometry">
+              <rect>
+               <x>510</x>
+               <y>0</y>
+               <width>241</width>
+               <height>121</height>
+              </rect>
+             </property>
+             <property name="title">
+              <string>Enter new visit details</string>
+             </property>
+             <widget class="QComboBox" name="AddVisit_providers_comboBox">
+              <property name="geometry">
+               <rect>
+                <x>30</x>
+                <y>60</y>
+                <width>181</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="placeholderText">
+               <string>Select provider</string>
+              </property>
+             </widget>
+             <widget class="QDateEdit" name="PatientInfoPage_AddVisit_dateEdit">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>110</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="displayFormat">
+               <string>MM/dd/yyyy</string>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QTimeEdit" name="PatientInfoPage_AddVisit_timeEdit">
+              <property name="geometry">
+               <rect>
+                <x>120</x>
+                <y>30</y>
+                <width>118</width>
+                <height>22</height>
+               </rect>
+              </property>
+              <property name="displayFormat">
+               <string>HH:mm</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="addVisit_button">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>90</y>
+                <width>80</width>
+                <height>18</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Add</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="cancelAddVisit_button">
+              <property name="geometry">
+               <rect>
+                <x>120</x>
+                <y>90</y>
+                <width>80</width>
+                <height>18</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Cancel</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QPushButton" name="enableAddVisit_button">
+             <property name="geometry">
+              <rect>
+               <x>430</x>
+               <y>20</y>
+               <width>80</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add visit...</string>
              </property>
             </widget>
            </widget>
@@ -1342,9 +1436,6 @@
       </widget>
      </widget>
     </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_12"/>
-    </item>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -1354,7 +1445,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMentcare">

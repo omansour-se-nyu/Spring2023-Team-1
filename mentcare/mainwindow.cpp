@@ -185,7 +185,7 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
         }
 
         QSqlQuery query_visits;
-        QString query_visits_String = "SELECT CASE WHEN datetime('now') < date_occurs THEN 'upcoming' ELSE 'past' END AS [Status], STRFTIME('%m/%d/%Y', date_occurs) AS [Date], STRFTIME('%H:%M', date_occurs) AS [Time], providers.first_name || ' ' || providers.last_name AS [Attending Provider] FROM patient_visits JOIN providers ON patient_visits.provider_id = providers.id WHERE patient_id=:patient_id ORDER BY date_occurs DESC";
+        QString query_visits_String = "SELECT CASE WHEN datetime('now') < datetime_occurs THEN 'upcoming' ELSE 'past' END AS [Status], STRFTIME('%m/%d/%Y', datetime_occurs) AS [Date], STRFTIME('%H:%M', datetime_occurs) AS [Time], providers.first_name || ' ' || providers.last_name AS [Attending Provider] FROM patient_visits JOIN providers ON patient_visits.provider_id = providers.id WHERE patient_id=:patient_id ORDER BY datetime_occurs DESC";
         query_visits.prepare(query_visits_String);
         query_visits.bindValue(":patient_id", id);
 
@@ -200,6 +200,9 @@ void MainWindow::on_stackedWidget_currentChanged(int arg1)
         {
             QMessageBox::information(this, "Connection", "Unable to Query Database");
         }
+
+        ui->addVisit_groupBox->setVisible(false);
+        ui->enableAddVisit_button->setEnabled(true);
     }
 }
 
@@ -643,5 +646,45 @@ void MainWindow::on_patientInfo_editsave_button_clicked()
             QMessageBox::information(this, "Edit Patient", "Unable to confirm changes, please check for errors");
         }
     }
+}
+
+
+void MainWindow::on_enableAddVisit_button_clicked()
+{
+
+    QSqlQuery query_providers;
+    query_providers.prepare("SELECT id, first_name || ' ' || last_name FROM providers");
+
+    if (query_providers.exec()){
+        QSqlQueryModel * model = new QSqlQueryModel();
+        model->setQuery(query_providers);
+
+
+        ui->AddVisit_providers_comboBox->setModel(model);
+        ui->AddVisit_providers_comboBox->setModelColumn(1);
+    } else {
+         QMessageBox::information(this, "Connection", "Unable to Query Database");
+    }
+
+
+    ui->PatientInfoPage_AddVisit_dateEdit->setDate(QDate::currentDate().addDays(1));
+    ui->PatientInfoPage_AddVisit_timeEdit->setTime(QTime::currentTime());
+
+    ui->AddVisit_providers_comboBox->setCurrentIndex(-1);
+
+    ui->AddVisit_providers_comboBox->setFocus();
+
+    ui->addVisit_groupBox->setVisible(true);
+
+    ui->enableAddVisit_button->setEnabled(false);
+}
+
+
+void MainWindow::on_cancelAddVisit_button_clicked()
+{
+    ui->addVisit_groupBox->setVisible(false);
+    ui->enableAddVisit_button->setEnabled(true);
+    ui->enableAddVisit_button->setFocus();
+
 }
 

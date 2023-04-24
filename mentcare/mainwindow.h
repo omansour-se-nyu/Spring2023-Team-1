@@ -94,6 +94,10 @@ private slots:
 
     void on_patientInfo_editsave_button_clicked();
 
+    void on_enableAddVisit_button_clicked();
+
+    void on_cancelAddVisit_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
