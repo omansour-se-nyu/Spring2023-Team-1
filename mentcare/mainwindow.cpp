@@ -563,12 +563,16 @@ void MainWindow::patientInfoReadOnlyMode()
         ui->patientInfo_ec_email_display->setReadOnly(true);
         ui->patientInfo_ec_phone_display->setReadOnly(true);
         editingPatient = false;
+
+        ui->enableAddVisit_button->setEnabled(true);
+        ui->goToChroniclesPage_button->setEnabled(true);
     }
 }
 
 void MainWindow::on_HomePage_ToPatientVisit_Button_clicked()
 {
-    ui->stackedWidget->setCurrentWidget(ui->PatientVisitPage);
+    QMessageBox::information(this, "Page not available", "This page is no longer in use. To view and create patient visits, go to the PatientInfo page for an individual patient.");
+//    ui->stackedWidget->setCurrentWidget(ui->PatientVisitPage);
 }
 
 void MainWindow::on_PatientVisit_Back_Button_clicked()
@@ -593,6 +597,11 @@ void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
 void MainWindow::on_patientInfo_editsave_button_clicked()
 {
     if (!editingPatient){
+
+        ui->enableAddVisit_button->setEnabled(false);
+        ui->goToChroniclesPage_button->setEnabled(false);
+        ui->addVisit_groupBox->setVisible(false);
+
         editingPatient = true;
         ui->patientInfo_editsave_button->setText("Save Changes");
         ui->patientInfo_back_button->setText("Cancel");
@@ -663,6 +672,9 @@ void MainWindow::on_patientInfo_editsave_button_clicked()
         } else {
             QMessageBox::information(this, "Edit Patient", "Unable to confirm changes, please check for errors");
         }
+
+        ui->enableAddVisit_button->setEnabled(true);
+        ui->goToChroniclesPage_button->setEnabled(true);
     }
 }
 
@@ -778,3 +790,139 @@ bool MainWindow::queryVisitsByPatient(int patient_id) {
     }
 
 }
+
+void MainWindow::on_backToPatientInfoPage_button_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->PatientInfoPage);
+}
+
+
+void MainWindow::on_goToChroniclesPage_button_clicked()
+{
+    //reused logic to determine patient_id
+    QString title = windowTitle();
+    QStringList parts = title.split(","); // Split the title string using comma delimiter
+    QString patientIdString = parts.at(1).trimmed(); // Extract the second part and remove whitespace
+    int id = patientIdString.toInt(); // Convert the patient id string to an integer
+
+
+    QString patientName = ui->patientInfo_firstname_display->text() + " " + ui->patientInfo_lastname_display->text();
+    ui->PatientChronicle_name_display->setText(patientName);
+
+    queryChroniclesByPatient(id);
+    ui->stackedWidget->setCurrentWidget(ui->PatientChroniclesPage);
+    ui->addChronicle_groupBox->setVisible(false);
+    ui->enableAddChronicle_button->setEnabled(true);
+}
+
+bool MainWindow::queryChroniclesByPatient(int patient_id)
+{
+    QSqlQuery query_chronicles;
+    QString query_chronicles_String = "SELECT STRFTIME('%m/%d/%Y', datetime(datetime_recorded,'localtime') ) AS [Date], STRFTIME('%H:%M', datetime(datetime_recorded, 'localtime') ) AS [Time], bloodPressureSystolic_mmHg || ' / ' || bloodPressureDiastolic_mmHg AS [blood pressure (mmHg)], pulseRate_bpm AS [pulse rate (bpm)], bodyTemperature_Fahr AS [body temperature (F)], notes FROM medical_chronicles WHERE patient_id = :patient_id ORDER BY datetime_recorded DESC";
+    query_chronicles.prepare(query_chronicles_String);
+    query_chronicles.bindValue(":patient_id", patient_id);
+
+    if(query_chronicles.exec())
+    {
+        QSqlQueryModel * model = new QSqlQueryModel();
+        model->setQuery(query_chronicles);
+
+
+        //decide how to display
+        ui->patientChronicles_tableView->setModel(model);
+        ui->patientChronicles_tableView->resizeColumnsToContents();
+        ui->patientChronicles_tableView->resizeRowsToContents();
+        return true;
+    }
+    else
+    {
+        QMessageBox::information(this, "Connection", "Unable to Query Database");
+        return false;
+    }
+}
+
+void MainWindow::on_enableAddChronicle_button_clicked()
+{
+
+
+
+    //hard coding with normal values. ideally, would query most recent values for this patient
+    ui->bpSys_spinBox->setValue(120);
+    ui->bpDia_spinBox->setValue(80);
+    ui->pulserate_spinBox->setValue(80);
+    ui->bodyTemp_spinBox->setValue(98.6);
+
+    ui->chronicleNotes_textEdit->setText("");
+
+    ui->addChronicle_groupBox->setVisible(true);
+
+    ui->enableAddChronicle_button->setEnabled(false);
+
+
+    ui->bpSys_spinBox->setFocus();
+
+
+
+
+
+}
+
+
+void MainWindow::on_cancelAddChronicle_button_clicked()
+{
+
+    ui->addChronicle_groupBox->setVisible(false);
+    ui->enableAddChronicle_button->setEnabled(true);
+    ui->enableAddChronicle_button->setFocus();
+
+}
+
+
+void MainWindow::on_addChronicle_button_clicked()
+{
+    //re-used code to parse patient_id from window title
+    QString title = windowTitle();
+    QStringList parts = title.split(","); // Split the title string using comma delimiter
+    QString patientIdString = parts.at(1).trimmed(); // Extract the second part and remove whitespace
+    int current_patient_id = patientIdString.toInt(); // Convert the patient id string to an integer
+
+
+
+    int input_bps = ui->bpSys_spinBox->value();
+    int input_bpd = ui->bpDia_spinBox->value();
+    int input_pr = ui->pulserate_spinBox->value();
+    double input_bodyTemp = ui->bodyTemp_spinBox->value();
+
+    QString input_notes = ui->chronicleNotes_textEdit->toPlainText();
+
+    QSqlQuery query_insert_chronicle;
+    query_insert_chronicle.prepare("INSERT INTO medical_chronicles (datetime_recorded, patient_id, bloodPressureSystolic_mmHg, bloodPressureDiastolic_mmHg, pulseRate_bpm, bodyTemperature_Fahr, notes)"
+                                   "VALUES ( datetime('now'), :patient_id, :bps, :bpd, :pr, :bodyTemp, :notes )");
+
+    query_insert_chronicle.bindValue(":patient_id", current_patient_id);
+    query_insert_chronicle.bindValue(":bps", input_bps);
+    query_insert_chronicle.bindValue(":bpd", input_bpd);
+    query_insert_chronicle.bindValue(":pr", input_pr);
+    query_insert_chronicle.bindValue(":bodyTemp", input_bodyTemp);
+    query_insert_chronicle.bindValue(":notes", input_notes);
+
+    if (query_insert_chronicle.exec()){
+        QMessageBox::information(this, "Success", "Chronicle added!");
+        queryChroniclesByPatient(current_patient_id);
+
+        ui->addChronicle_groupBox->setVisible(false);
+        ui->enableAddChronicle_button->setEnabled(true);
+        ui->enableAddChronicle_button->setFocus();
+
+    } else {
+        QMessageBox::information(this, "Connection", "Unable to Query Database");
+    }
+
+}
+
+
+void MainWindow::on_HomePage_toCalendar_Button_clicked()
+{
+    QMessageBox::information(this, "Page not available", "This page is under construction.");
+}
+

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>725</height>
+    <width>845</width>
+    <height>987</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="PatientsPage">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -82,6 +82,12 @@
        </widget>
       </widget>
       <widget class="QWidget" name="PatientInfoPage">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
          <widget class="QGroupBox" name="bio_groupBox">
@@ -460,7 +466,7 @@
           <item>
            <widget class="QGroupBox" name="visits_groupBox">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -572,11 +578,233 @@
               <string>Add visit...</string>
              </property>
             </widget>
+            <widget class="QPushButton" name="goToChroniclesPage_button">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>120</y>
+               <width>821</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>View patient chronicles...</string>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>
         </item>
        </layout>
+      </widget>
+      <widget class="QWidget" name="PatientChroniclesPage">
+       <widget class="QGroupBox" name="addChronicle_groupBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>310</y>
+          <width>819</width>
+          <height>153</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Enter chronicle details</string>
+        </property>
+        <widget class="QGroupBox" name="bp_input_groupBox">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>141</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>blood pressure (mmHg)</string>
+         </property>
+         <widget class="QWidget" name="formLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>20</y>
+            <width>101</width>
+            <height>80</height>
+           </rect>
+          </property>
+          <layout class="QFormLayout" name="formLayout_7">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_30">
+             <property name="text">
+              <string>systolic</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="bpSys_spinBox">
+             <property name="maximum">
+              <number>200</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_31">
+             <property name="text">
+              <string>diastolic</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="bpDia_spinBox">
+             <property name="maximum">
+              <number>200</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="formLayoutWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>40</y>
+           <width>181</width>
+           <height>80</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_9">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_33">
+            <property name="text">
+             <string>pulse rate (bpm)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="pulserate_spinBox">
+            <property name="maximum">
+             <number>120</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_34">
+            <property name="text">
+             <string>body temperature (F)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDoubleSpinBox" name="bodyTemp_spinBox">
+            <property name="maximum">
+             <double>200.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QTextEdit" name="chronicleNotes_textEdit">
+         <property name="geometry">
+          <rect>
+           <x>320</x>
+           <y>20</y>
+           <width>481</width>
+           <height>81</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Enter notes here</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="addChronicle_button">
+         <property name="geometry">
+          <rect>
+           <x>370</x>
+           <y>110</y>
+           <width>80</width>
+           <height>18</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="cancelAddChronicle_button">
+         <property name="geometry">
+          <rect>
+           <x>510</x>
+           <y>110</y>
+           <width>80</width>
+           <height>18</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QTableView" name="patientChronicles_tableView">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>60</y>
+          <width>721</width>
+          <height>192</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QWidget" name="horizontalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>230</y>
+          <width>175</width>
+          <height>80</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
+         <item>
+          <widget class="QPushButton" name="backToPatientInfoPage_button">
+           <property name="text">
+            <string>Back</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="enableAddChronicle_button">
+           <property name="text">
+            <string>Add chronicle...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QLabel" name="label_35">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>30</y>
+          <width>161</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Medical chronicles</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="PatientChronicle_name_display">
+        <property name="geometry">
+         <rect>
+          <x>42</x>
+          <y>0</y>
+          <width>141</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="AddPatientPage">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -1193,9 +1421,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="HomePage_ToPatientVisit_Button">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
             <property name="text">
              <string>Patient Visit</string>
             </property>
@@ -1453,8 +1678,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>21</height>
+     <width>845</width>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMentcare">
