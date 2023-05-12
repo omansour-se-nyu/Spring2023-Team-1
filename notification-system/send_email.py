@@ -21,4 +21,4 @@ def send_email_notification(email_receiver, message):
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
 
-    return response
+    return response.json()

@@ -32,14 +32,14 @@ def notify(visit_data):
     elif notification_setting == "Phone":
         email = visit_data["email"]
         phone_receiver = db_read_phone_by_email(email)
-        print(phone_receiver)
         if phone_receiver is not None:
-            send_phone_notification(
+            return send_phone_notification(
                 phone_receiver,
                 notification_content
             )
         return "Phone"
     elif notification_setting == "Email":
-        return "Email"
+        email = visit_data["email"]
+        return send_email_notification(email, notification_content)
     else:
         return None

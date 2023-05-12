@@ -9,7 +9,7 @@ def send_phone_notification(phone_receiver, message):
     response = sms.send_message(
         {
             "from": "18334443755",
-            "to": "19147705342",
+            "to": phone_receiver,
             "text": message
         }
     )
