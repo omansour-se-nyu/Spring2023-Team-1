@@ -6,6 +6,13 @@
 #include <Qstring>
 #include <string>
 
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QDebug>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -567,5 +574,86 @@ void MainWindow::on_HomePage_ToPatientVisit_Button_clicked()
 void MainWindow::on_PatientVisit_Back_Button_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->HomePage);
+}
+
+void sendVisitData(
+    const QDate& visitDate,
+    const QString& insuranceCode,
+    const QString& email,
+    const QTime& visitTime,
+    const QString& visitReason,
+    const QString& notificationSetting
+   )
+{
+    // Create the JSON object with the visit data
+
+    // create custom temporary event loop on stack
+    QEventLoop eventLoop;
+    QJsonObject requestData;
+    requestData["visit_date"] = visitDate.toString(Qt::ISODate);
+    requestData["insurance_code"] = insuranceCode;
+    requestData["email"] = email;
+    requestData["visit_time"] = visitTime.toString(Qt::ISODate);
+    requestData["reason_for_visit"] = visitReason;
+    requestData["notification_setting"] = notificationSetting;
+
+    // Convert the JSON object to a QByteArray
+    QJsonDocument jsonDocument(requestData);
+    QByteArray postData = jsonDocument.toJson();
+
+    // Create the network request
+    QNetworkRequest request(QUrl("http://127.0.0.1:5000/receive_visit_data"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    // Send the POST request
+    QNetworkAccessManager networkManager;
+    QNetworkReply* reply = networkManager.post(request, postData);
+    eventLoop.exec();
+
+}
+
+void MainWindow::on_PatientVisit_Confirm_Button_clicked()
+{
+
+    if (!db.open()) {
+        // Handle the case when the database fails to open
+        QMessageBox::critical(this, "Database Error", "Failed to open the database");
+        return;
+    }
+
+    QDate visitDate = ui->PatientVisit_DateEdit_Date->date();
+    QString insuranceCode = ui->PatientVisit_LienEdit_InsuranceCode->text();
+    QString email = ui->PatientVisit_LineEdit_Email->text();
+    QTime visitTime = ui->PatientVisit_LineEdit_Time->time();
+    QString visitReason = ui->PatientVisit_LineEidt_Reason->toPlainText();
+    QString notificationSetting = ui-> PatientVisit_LienEdit_NotificationSetting -> text();
+
+    if (notificationSetting != "NA" and notificationSetting != "Email" and notificationSetting != "Phone") {
+        QMessageBox::critical(this, "Notification Setting Error", "Incorrect notification setting!");
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO patient_visits (visit_date, insurance_code, email, visit_time, reason_for_visit, notification_setting) "
+                  "VALUES (:visit_date, :insurance_code, :email, :visit_time, :reason_for_visit, :notification_setting)");
+    query.bindValue(":visit_date", visitDate);
+    query.bindValue(":insurance_code", insuranceCode);
+    query.bindValue(":email", email);
+    query.bindValue(":visit_time", visitTime);
+    query.bindValue(":reason_for_visit", visitReason);
+    query.bindValue(":notification_setting", notificationSetting);
+
+    if (query.exec()){
+        QMessageBox::information(this, "Inserted", "Successfully Added Visit");
+        db.close();
+        sendVisitData(visitDate, insuranceCode, email, visitTime, visitReason, notificationSetting);
+        // Additional code to handle successful insertion
+    } else {
+        QMessageBox::critical(this, "Query Error", "Error executing query: " + query.lastError().text());
+
+//        QMessageBox::information(this, "Not Inserted", "Could Not Add Visit");
+//        db.close();
+        // Additional code to handle insertion failure
+    }
 }
 
